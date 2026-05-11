@@ -229,10 +229,16 @@
     .cycle-event-name { font-size:.85rem; font-weight:700; margin-bottom:.15rem; }
     .cycle-event-sub { font-size:.75rem; color:var(--muted); }
     .ev-open{background:rgba(71,85,105,.25)} .ev-open .cycle-event-name{color:#94a3b8}
-    .ev-rs{background:rgba(14,165,233,.12)} .ev-rs .cycle-event-name{color:var(--rs)}
-    .ev-pcs{background:rgba(139,92,246,.12)} .ev-pcs .cycle-event-name{color:#a78bfa}
-    .ev-event{background:rgba(16,185,129,.10)} .ev-event .cycle-event-name{color:#34d399}
-    .ev-pgs{background:rgba(245,158,11,.12)} .ev-pgs .cycle-event-name{color:var(--pgs)}
+    .ev-rsq{background:rgba(14,165,233,.08)} .ev-rsq .cycle-event-name{color:#7dd3fc}
+    .ev-rs{background:rgba(14,165,233,.18)} .ev-rs .cycle-event-name{color:var(--rs)}
+    .ev-pcs{background:rgba(139,92,246,.18)} .ev-pcs .cycle-event-name{color:#a78bfa}
+    .ev-event{background:rgba(16,185,129,.16)} .ev-event .cycle-event-name{color:#34d399}
+    .ev-pgs{background:rgba(245,158,11,.2)} .ev-pgs .cycle-event-name{color:var(--pgs)}
+    .cycle-events > .cycle-event:first-child { padding:.85rem 1rem; }
+    .cycle-events > .cycle-event:first-child .cycle-event-name { font-size:.95rem; font-weight:800; }
+    .cycle-events > .cycle-event:nth-child(2) { opacity:.7; padding:.5rem .75rem; }
+    .cycle-events > .cycle-event:nth-child(2) .cycle-event-name { font-size:.78rem; }
+    .cycle-events > .cycle-event:nth-child(2) .cycle-event-sub { font-size:.7rem; }
     .cycle-note { margin-top:1.5rem; padding:1rem 1.5rem; background:var(--bg3); border:1px solid var(--line); border-radius:.75rem; font-size:.85rem; color:var(--muted); line-height:1.7; }
 
     /* ── EVENTS ── */
@@ -617,10 +623,23 @@
         <p class="section-desc">어떤 주에 어떤 대회가 열리는지 외울 수 있습니다.</p>
       </div>
       <div class="cycle-grid fade-in">
-        <div class="cycle-week cw-w1"><div class="cycle-week-header">Week 1</div><div class="cycle-events"><div class="cycle-event ev-open"><div class="cycle-event-name">Open 예선</div><div class="cycle-event-sub">평일 · 온라인 · 누구나</div></div><div class="cycle-event ev-rs"><div class="cycle-event-name">Regional Series</div><div class="cycle-event-sub">주말 (토·일) · 온라인</div></div></div></div>
-        <div class="cycle-week cw-w2"><div class="cycle-week-header">Week 2</div><div class="cycle-events"><div class="cycle-event ev-open"><div class="cycle-event-name">Open 예선</div><div class="cycle-event-sub">평일 · 온라인 (선택)</div></div><div class="cycle-event ev-pcs"><div class="cycle-event-name">PCS</div><div class="cycle-event-sub">주말 (토·일) · 온라인 · 4대륙</div></div></div></div>
-        <div class="cycle-week cw-w3"><div class="cycle-week-header">Week 3</div><div class="cycle-events"><div class="cycle-event ev-event"><div class="cycle-event-name">Event Match</div><div class="cycle-event-sub">주말 · 스트리머·셀러브리티 콜라보</div></div></div></div>
-        <div class="cycle-week cw-w4"><div class="cycle-week-header">Week 4</div><div class="cycle-events"><div class="cycle-event ev-pgs"><div class="cycle-event-name">PGS 🏟️</div><div class="cycle-event-sub">금·토·일 · LAN 오프라인 · 16팀</div></div></div></div>
+        <div class="cycle-week cw-w1"><div class="cycle-week-header">Week 1</div><div class="cycle-events">
+          <div class="cycle-event ev-rs"><div class="cycle-event-name">Regional Series</div><div class="cycle-event-sub">주말 (토·일) · 온라인 · 9개 지역</div></div>
+          <div class="cycle-event ev-rsq"><div class="cycle-event-name">RS Q</div><div class="cycle-event-sub">평일 (화·수·목) · RS 예선</div></div>
+          <div class="cycle-event ev-open"><div class="cycle-event-name">Open 예선</div><div class="cycle-event-sub">평일 · 지역 재량</div></div>
+        </div></div>
+        <div class="cycle-week cw-w2"><div class="cycle-week-header">Week 2</div><div class="cycle-events">
+          <div class="cycle-event ev-pcs"><div class="cycle-event-name">PCS</div><div class="cycle-event-sub">주말 (토·일) · 온라인 · 4대륙</div></div>
+          <div class="cycle-event ev-open"><div class="cycle-event-name">Open 예선</div><div class="cycle-event-sub">평일 (화·수·목) · 온라인</div></div>
+        </div></div>
+        <div class="cycle-week cw-w3"><div class="cycle-week-header">Week 3</div><div class="cycle-events">
+          <div class="cycle-event ev-event"><div class="cycle-event-name">Event Match</div><div class="cycle-event-sub">주말 · 스트리머·셀러브리티 콜라보</div></div>
+          <div class="cycle-event ev-open"><div class="cycle-event-name">Open 예선</div><div class="cycle-event-sub">평일 (화·수·목) · 온라인</div></div>
+        </div></div>
+        <div class="cycle-week cw-w4"><div class="cycle-week-header">Week 4</div><div class="cycle-events">
+          <div class="cycle-event ev-pgs"><div class="cycle-event-name">PGS 🏟️</div><div class="cycle-event-sub">금·토·일 · LAN 오프라인 · 16팀</div></div>
+          <div class="cycle-event ev-rsq"><div class="cycle-event-name">RS Q</div><div class="cycle-event-sub">평일 (화·수·목) · RS 예선</div></div>
+        </div></div>
       </div>
       <div class="cycle-note fade-in">🗺️ <strong>맵 사이클:</strong> 각 사이클마다 단일 맵이 지정됩니다. Open·RS·PCS·PGS 전체가 같은 맵으로 진행됩니다. 어떤 팀이 이 맵에서 강한지, 사이클마다 새로운 서사가 만들어집니다.</div>
     </div>
@@ -1266,10 +1285,15 @@ const I18N = {
   '4주가 한 사이클,<br>매달 반복됩니다': 'Four-week cycle,<br>repeating monthly',
   '어떤 주에 어떤 대회가 열리는지 외울 수 있습니다.': 'Easy to memorize which week hosts which competition.',
   'Open 예선': 'Open Qualifier',
+  'RS Q': 'RS Q',
   '평일 · 온라인 · 누구나': 'Weekdays · Online · Open to all',
   '평일 · 온라인 (선택)': 'Weekdays · Online (optional)',
+  '평일 (화·수·목) · 온라인': 'Weekdays (Tue·Wed·Thu) · Online',
+  '평일 (화·수·목) · RS 예선': 'Weekdays (Tue·Wed·Thu) · RS Qualifier',
+  '평일 · 지역 재량': 'Weekdays · Region discretion',
   '주말 (토·일) · 온라인': 'Weekends (Sat·Sun) · Online',
   '주말 (토·일) · 온라인 · 4대륙': 'Weekends (Sat·Sun) · Online · 4 continents',
+  '주말 (토·일) · 온라인 · 9개 지역': 'Weekends (Sat·Sun) · Online · 9 regions',
   '주말 · 스트리머·셀러브리티 콜라보': 'Weekends · Streamer & celebrity collabs',
   'PGS 🏟️': 'PGS 🏟️',
   '금·토·일 · LAN 오프라인 · 16팀': 'Fri·Sat·Sun · LAN · 16 teams',
