@@ -7,1115 +7,966 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg:       #080c18;
-      --bg2:      #0e1422;
-      --bg3:      #141b2d;
-      --line:     #1e2a42;
-      --text:     #e2e8f0;
-      --muted:    #7a90b0;
-      --blue:     #2563eb;
-      --blue2:    #3b82f6;
-      --purple:   #7c3aed;
-      --gold:     #d97706;
-      --gold2:    #fbbf24;
-      --red:      #dc2626;
-      --green:    #059669;
-      --gray:     #475569;
-      --open:     #475569;
-      --rs:       #0ea5e9;
-      --pcs:      #8b5cf6;
-      --pgs:      #f59e0b;
-      --pgc:      #ef4444;
+      --bg:#080c18; --bg2:#0e1422; --bg3:#141b2d; --line:#1e2a42;
+      --text:#e2e8f0; --muted:#7a90b0;
+      --blue:#2563eb; --blue2:#3b82f6;
+      --purple:#7c3aed; --gold:#d97706; --gold2:#fbbf24;
+      --red:#dc2626; --green:#059669; --gray:#475569;
+      --open:#475569; --rs:#0ea5e9; --pcs:#8b5cf6; --pgs:#f59e0b; --pgc:#ef4444;
     }
-
     html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Noto Sans KR', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-    }
+    body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
 
     /* ── NAV ── */
     nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 2rem;
-      height: 60px;
-      background: rgba(8,12,24,0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--line);
+      position:fixed; top:0; left:0; right:0; z-index:100;
+      background:rgba(8,12,24,0.95); backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--line);
     }
-    .nav-logo {
-      font-size: 1rem; font-weight: 900; letter-spacing: 0.08em;
-      color: var(--gold2);
+    .nav-top {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 2rem; height:54px;
     }
-    .nav-links { display: flex; gap: 1.5rem; }
-    .nav-links a {
-      color: var(--muted); font-size: 0.85rem; text-decoration: none;
-      transition: color .2s;
+    .nav-logo { font-size:.9rem; font-weight:900; letter-spacing:.08em; color:var(--gold2); }
+    .page-tabs { display:flex; gap:.25rem; }
+    .tab-btn {
+      padding:.4rem 1rem; border-radius:.5rem; border:none; cursor:pointer;
+      font-size:.82rem; font-weight:700; font-family:'Noto Sans KR',sans-serif;
+      background:transparent; color:var(--muted); transition:all .2s;
     }
-    .nav-links a:hover { color: var(--text); }
+    .tab-btn:hover { color:var(--text); background:rgba(255,255,255,0.05); }
+    .tab-btn.active { background:rgba(37,99,235,0.2); color:var(--blue2); }
+    .nav-scroll {
+      display:flex; gap:1.5rem; padding:.5rem 2rem;
+      border-top:1px solid var(--line); overflow-x:auto;
+    }
+    .nav-scroll a {
+      color:var(--muted); font-size:.78rem; text-decoration:none;
+      white-space:nowrap; transition:color .2s;
+    }
+    .nav-scroll a:hover { color:var(--text); }
+
+    /* ── PAGE CONTAINER ── */
+    .page { display:none; }
+    .page.active { display:block; }
+    .page-top-pad { padding-top:100px; }
+    .page-top-pad-home { padding-top:115px; }
+
+    /* ── SECTION ── */
+    section { padding:5rem 1.5rem; }
+    .container { max-width:1100px; margin:0 auto; }
+    .section-label { font-size:.75rem; font-weight:700; letter-spacing:.2em; color:var(--blue2); text-transform:uppercase; margin-bottom:.75rem; }
+    .section-title { font-size:clamp(1.8rem,4vw,2.8rem); font-weight:900; line-height:1.15; margin-bottom:1rem; }
+    .section-desc { font-size:1rem; color:var(--muted); max-width:640px; margin-bottom:3rem; line-height:1.8; }
 
     /* ── HERO ── */
     .hero {
-      min-height: 100vh;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      text-align: center;
-      padding: 6rem 1.5rem 4rem;
+      min-height:100vh; display:flex; flex-direction:column;
+      align-items:center; justify-content:center; text-align:center;
+      padding:6rem 1.5rem 4rem;
       background:
-        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(37,99,235,0.18) 0%, transparent 70%),
-        radial-gradient(ellipse 50% 40% at 80% 100%, rgba(124,58,237,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 60% at 50% 0%,rgba(37,99,235,.18) 0%,transparent 70%),
+        radial-gradient(ellipse 50% 40% at 80% 100%,rgba(124,58,237,.12) 0%,transparent 60%),
         var(--bg);
-      position: relative; overflow: hidden;
+      position:relative; overflow:hidden;
     }
     .hero::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231e2a42' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-      opacity: 0.3;
+      content:''; position:absolute; inset:0;
+      background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231e2a42' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      opacity:.3;
     }
     .hero-eyebrow {
-      font-size: 0.8rem; font-weight: 700; letter-spacing: 0.2em;
-      color: var(--gold2); text-transform: uppercase;
-      margin-bottom: 1rem;
-      padding: 0.3rem 1rem;
-      border: 1px solid rgba(251,191,36,0.3);
-      border-radius: 2rem;
-      display: inline-block;
+      font-size:.8rem; font-weight:700; letter-spacing:.2em; color:var(--gold2);
+      text-transform:uppercase; margin-bottom:1rem; padding:.3rem 1rem;
+      border:1px solid rgba(251,191,36,.3); border-radius:2rem; display:inline-block;
     }
     .hero h1 {
-      font-size: clamp(2.2rem, 6vw, 4.5rem);
-      font-weight: 900;
-      line-height: 1.1;
-      margin-bottom: 1.5rem;
-      background: linear-gradient(135deg, #fff 30%, #93c5fd);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      font-size:clamp(2.2rem,6vw,4.5rem); font-weight:900; line-height:1.1; margin-bottom:1.5rem;
+      background:linear-gradient(135deg,#fff 30%,#93c5fd);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
     }
-    .hero-sub {
-      font-size: clamp(1rem, 2.5vw, 1.25rem);
-      color: var(--muted);
-      max-width: 600px;
-      margin-bottom: 3rem;
-    }
-    .hero-stats {
-      display: flex; gap: 3rem; flex-wrap: wrap; justify-content: center;
-      margin-bottom: 3rem;
-    }
-    .hero-stat { text-align: center; }
-    .hero-stat .num {
-      display: block;
-      font-size: 2.5rem; font-weight: 900;
-      color: var(--gold2);
-      line-height: 1;
-    }
-    .hero-stat .label {
-      font-size: 0.8rem; color: var(--muted); font-weight: 500;
-      margin-top: 0.3rem;
-    }
+    .hero-sub { font-size:clamp(1rem,2.5vw,1.25rem); color:var(--muted); max-width:600px; margin-bottom:3rem; }
+    .hero-stats { display:flex; gap:3rem; flex-wrap:wrap; justify-content:center; margin-bottom:3rem; }
+    .hero-stat .num { display:block; font-size:2.5rem; font-weight:900; color:var(--gold2); line-height:1; }
+    .hero-stat .label { font-size:.8rem; color:var(--muted); font-weight:500; margin-top:.3rem; }
     .scroll-hint {
-      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
-      display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
-      color: var(--muted); font-size: 0.75rem; letter-spacing: 0.1em;
-      animation: bounce 2s infinite;
+      position:absolute; bottom:2rem; left:50%; transform:translateX(-50%);
+      display:flex; flex-direction:column; align-items:center; gap:.4rem;
+      color:var(--muted); font-size:.75rem; letter-spacing:.1em; animation:bounce 2s infinite;
     }
-    .scroll-hint svg { width: 20px; height: 20px; opacity: 0.6; }
-    @keyframes bounce {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50% { transform: translateX(-50%) translateY(8px); }
-    }
-
-    /* ── SECTION WRAPPER ── */
-    section { padding: 6rem 1.5rem; }
-    .container { max-width: 1100px; margin: 0 auto; }
-    .section-label {
-      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.2em;
-      color: var(--blue2); text-transform: uppercase;
-      margin-bottom: 0.75rem;
-    }
-    .section-title {
-      font-size: clamp(1.8rem, 4vw, 2.8rem);
-      font-weight: 900; line-height: 1.15;
-      margin-bottom: 1rem;
-    }
-    .section-desc {
-      font-size: 1rem; color: var(--muted);
-      max-width: 640px; margin-bottom: 3.5rem;
-      line-height: 1.8;
-    }
+    .scroll-hint svg { width:20px; height:20px; opacity:.6; }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
 
     /* ── TIER LADDER ── */
-    #ladder { background: var(--bg2); }
-    .tiers { display: flex; flex-direction: column; gap: 1rem; }
+    .tiers { display:flex; flex-direction:column; gap:1rem; }
     .tier-card {
-      display: grid;
-      grid-template-columns: 56px 1fr auto;
-      align-items: center;
-      gap: 1.5rem;
-      padding: 1.5rem 2rem;
-      background: var(--bg3);
-      border: 1px solid var(--line);
-      border-radius: 1rem;
-      cursor: pointer;
-      transition: all .25s;
-      position: relative;
-      overflow: hidden;
+      display:grid; grid-template-columns:56px 1fr auto;
+      align-items:center; gap:1.5rem; padding:1.5rem 2rem;
+      background:var(--bg3); border:1px solid var(--line); border-radius:1rem;
+      cursor:default; transition:all .25s; position:relative; overflow:hidden;
     }
-    .tier-card::before {
-      content: '';
-      position: absolute; left: 0; top: 0; bottom: 0;
-      width: 4px;
-      border-radius: 4px 0 0 4px;
-    }
-    .tier-card:hover {
-      transform: translateX(6px);
-      border-color: rgba(255,255,255,0.15);
-    }
-    .tier-card[data-tier="open"]   { border-left-color: var(--open); }
-    .tier-card[data-tier="open"]::before   { background: var(--open); }
-    .tier-card[data-tier="rs"]    { border-left-color: var(--rs); }
-    .tier-card[data-tier="rs"]::before    { background: var(--rs); }
-    .tier-card[data-tier="pcs"]   { border-left-color: var(--pcs); }
-    .tier-card[data-tier="pcs"]::before   { background: var(--pcs); }
-    .tier-card[data-tier="pgs"]   { border-left-color: var(--pgs); }
-    .tier-card[data-tier="pgs"]::before   { background: var(--pgs); }
-    .tier-card[data-tier="pgc"]   { border-left-color: var(--pgc); }
-    .tier-card[data-tier="pgc"]::before   { background: var(--pgc); }
+    .tier-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:4px; border-radius:4px 0 0 4px; }
+    .tier-card:hover { transform:translateX(6px); border-color:rgba(255,255,255,.15); }
+    .tier-card[data-tier="open"]::before{background:var(--open)}
+    .tier-card[data-tier="rs"]::before{background:var(--rs)}
+    .tier-card[data-tier="pcs"]::before{background:var(--pcs)}
+    .tier-card[data-tier="pgs"]::before{background:var(--pgs)}
+    .tier-card[data-tier="pgc"]::before{background:var(--pgc)}
+    .tier-icon { width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.4rem; flex-shrink:0; }
+    .tier-card[data-tier="open"] .tier-icon{background:rgba(71,85,105,.3)}
+    .tier-card[data-tier="rs"] .tier-icon{background:rgba(14,165,233,.15)}
+    .tier-card[data-tier="pcs"] .tier-icon{background:rgba(139,92,246,.15)}
+    .tier-card[data-tier="pgs"] .tier-icon{background:rgba(245,158,11,.15)}
+    .tier-card[data-tier="pgc"] .tier-icon{background:rgba(239,68,68,.15)}
+    .tier-info { min-width:0; }
+    .tier-name { font-size:1.1rem; font-weight:700; margin-bottom:.25rem; }
+    .tier-card[data-tier="open"] .tier-name{color:#94a3b8}
+    .tier-card[data-tier="rs"] .tier-name{color:var(--rs)}
+    .tier-card[data-tier="pcs"] .tier-name{color:#a78bfa}
+    .tier-card[data-tier="pgs"] .tier-name{color:var(--pgs)}
+    .tier-card[data-tier="pgc"] .tier-name{color:#fca5a5}
+    .tier-desc { font-size:.9rem; color:var(--muted); }
+    .tier-meta { text-align:right; flex-shrink:0; }
+    .tier-teams { font-size:1.3rem; font-weight:900; }
+    .tier-teams-label { font-size:.72rem; color:var(--muted); }
+    .tier-prize { font-size:.78rem; color:var(--gold2); margin-top:.2rem; }
+    .ladder-arrow { text-align:center; color:var(--muted); font-size:1rem; padding:.1rem 0; opacity:.5; }
 
-    .tier-icon {
-      width: 48px; height: 48px;
-      border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.4rem;
-      flex-shrink: 0;
-    }
-    .tier-card[data-tier="open"]  .tier-icon { background: rgba(71,85,105,0.3); }
-    .tier-card[data-tier="rs"]    .tier-icon { background: rgba(14,165,233,0.15); }
-    .tier-card[data-tier="pcs"]   .tier-icon { background: rgba(139,92,246,0.15); }
-    .tier-card[data-tier="pgs"]   .tier-icon { background: rgba(245,158,11,0.15); }
-    .tier-card[data-tier="pgc"]   .tier-icon { background: rgba(239,68,68,0.15); }
+    /* ── POINTS SIMPLE ── */
+    .points-simple { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1.5rem; margin-bottom:3rem; }
+    .point-step { background:var(--bg3); border:1px solid var(--line); border-radius:1rem; padding:1.5rem; text-align:center; }
+    .point-step .step-num { width:36px; height:36px; border-radius:50%; background:var(--blue); color:#fff; font-weight:900; font-size:.9rem; display:flex; align-items:center; justify-content:center; margin:0 auto 1rem; }
+    .point-step h3 { font-size:1rem; font-weight:700; margin-bottom:.5rem; }
+    .point-step p { font-size:.88rem; color:var(--muted); line-height:1.7; }
 
-    .tier-info { min-width: 0; }
-    .tier-name { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem; }
-    .tier-card[data-tier="open"]  .tier-name { color: var(--open); filter: brightness(1.6); }
-    .tier-card[data-tier="rs"]    .tier-name { color: var(--rs); }
-    .tier-card[data-tier="pcs"]   .tier-name { color: var(--pcs); filter: brightness(1.3); }
-    .tier-card[data-tier="pgs"]   .tier-name { color: var(--pgs); }
-    .tier-card[data-tier="pgc"]   .tier-name { color: var(--pgc); }
-    .tier-desc { font-size: 0.9rem; color: var(--muted); }
-    .tier-meta {
-      text-align: right; flex-shrink: 0;
-    }
-    .tier-teams { font-size: 1.3rem; font-weight: 900; }
-    .tier-teams-label { font-size: 0.72rem; color: var(--muted); }
-    .tier-prize { font-size: 0.78rem; color: var(--gold2); margin-top: 0.2rem; }
-
-    .ladder-arrow {
-      text-align: center;
-      color: var(--muted);
-      font-size: 1.2rem;
-      padding: 0.1rem 0;
-      opacity: 0.5;
-    }
-
-    /* ── POINTS ── */
-    #points { background: var(--bg); }
-    .points-simple {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 3rem;
-    }
-    .point-step {
-      background: var(--bg3);
-      border: 1px solid var(--line);
-      border-radius: 1rem;
-      padding: 1.5rem;
-      text-align: center;
-    }
-    .point-step .step-num {
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      background: var(--blue);
-      color: #fff;
-      font-weight: 900; font-size: 0.9rem;
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 1rem;
-    }
-    .point-step h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
-    .point-step p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
-
-    .points-table-wrap {
-      background: var(--bg3);
-      border: 1px solid var(--line);
-      border-radius: 1rem;
-      overflow: hidden;
-    }
-    .points-table-title {
-      padding: 1rem 1.5rem;
-      background: var(--bg2);
-      border-bottom: 1px solid var(--line);
-      font-size: 0.85rem; font-weight: 700; color: var(--muted);
-      letter-spacing: 0.05em;
-    }
-    .pt-grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-    }
-    .pt-cell {
-      padding: 1rem 0.5rem;
-      text-align: center;
-      border-right: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-    }
-    .pt-cell:last-child { border-right: none; }
-    .pt-cell .pt-comp { font-size: 0.72rem; color: var(--muted); margin-bottom: 0.4rem; font-weight: 600; }
-    .pt-cell .pt-pts { font-size: 1.4rem; font-weight: 900; }
-    .pt-cell[data-tier="open"]  .pt-pts { color: #94a3b8; }
-    .pt-cell[data-tier="rs"]    .pt-pts { color: var(--rs); }
-    .pt-cell[data-tier="pcs"]   .pt-pts { color: var(--pcs); filter: brightness(1.3); }
-    .pt-cell[data-tier="pgs"]   .pt-pts { color: var(--pgs); }
-    .pt-cell[data-tier="ewc"]   .pt-pts { color: #10b981; }
-    .pt-cell[data-tier="pgc"]   .pt-pts { color: var(--pgc); }
-    .pt-cell .pt-label { font-size: 0.68rem; color: var(--muted); margin-top: 0.3rem; }
-    .pt-note {
-      padding: 1rem 1.5rem;
-      font-size: 0.82rem; color: var(--muted);
-      border-top: 1px solid var(--line);
-      background: var(--bg2);
-      line-height: 1.7;
-    }
-
-    .ladder-logic {
-      display: grid;
-      grid-template-columns: 1fr 60px 1fr;
-      align-items: center;
-      gap: 0;
-      margin-top: 2rem;
-      background: var(--bg3);
-      border: 1px solid var(--line);
-      border-radius: 1rem;
-      overflow: hidden;
-    }
-    .ll-side {
-      padding: 1.5rem 2rem;
-      text-align: center;
-    }
-    .ll-side.ll-left { border-right: 1px solid var(--line); }
-    .ll-side.ll-right { border-left: 1px solid var(--line); }
-    .ll-comp { font-size: 0.75rem; color: var(--muted); font-weight: 600; margin-bottom: 0.3rem; }
-    .ll-result { font-size: 0.9rem; color: var(--muted); margin-top: 0.3rem; }
-    .ll-pts { font-size: 2rem; font-weight: 900; }
-    .ll-mid { text-align: center; color: var(--muted); font-size: 1.2rem; font-weight: 900; }
-    .ll-caption {
-      grid-column: 1 / -1;
-      padding: 0.75rem 2rem;
-      text-align: center;
-      font-size: 0.82rem; color: var(--muted);
-      background: var(--bg2);
-      border-top: 1px solid var(--line);
-    }
+    .points-table-wrap { background:var(--bg3); border:1px solid var(--line); border-radius:1rem; overflow:hidden; }
+    .points-table-title { padding:1rem 1.5rem; background:var(--bg2); border-bottom:1px solid var(--line); font-size:.85rem; font-weight:700; color:var(--muted); }
+    .pt-grid { display:grid; grid-template-columns:repeat(6,1fr); }
+    .pt-cell { padding:1rem .5rem; text-align:center; border-right:1px solid var(--line); border-bottom:1px solid var(--line); }
+    .pt-cell:last-child{border-right:none}
+    .pt-cell .pt-comp { font-size:.72rem; color:var(--muted); margin-bottom:.4rem; font-weight:600; }
+    .pt-cell .pt-pts { font-size:1.4rem; font-weight:900; }
+    .pt-cell[data-tier="open"] .pt-pts{color:#94a3b8}
+    .pt-cell[data-tier="rs"] .pt-pts{color:var(--rs)}
+    .pt-cell[data-tier="pcs"] .pt-pts{color:#a78bfa}
+    .pt-cell[data-tier="pgs"] .pt-pts{color:var(--pgs)}
+    .pt-cell[data-tier="ewc"] .pt-pts{color:#10b981}
+    .pt-cell[data-tier="pgc"] .pt-pts{color:#fca5a5}
+    .pt-cell .pt-label { font-size:.68rem; color:var(--muted); margin-top:.3rem; }
+    .pt-note { padding:1rem 1.5rem; font-size:.82rem; color:var(--muted); border-top:1px solid var(--line); background:var(--bg2); line-height:1.7; }
+    .ladder-logic { display:grid; grid-template-columns:1fr 60px 1fr; align-items:center; margin-top:2rem; background:var(--bg3); border:1px solid var(--line); border-radius:1rem; overflow:hidden; }
+    .ll-side { padding:1.5rem 2rem; text-align:center; }
+    .ll-side.ll-left{border-right:1px solid var(--line)}
+    .ll-side.ll-right{border-left:1px solid var(--line)}
+    .ll-comp { font-size:.75rem; color:var(--muted); font-weight:600; margin-bottom:.3rem; }
+    .ll-result { font-size:.9rem; color:var(--muted); margin-top:.3rem; }
+    .ll-pts { font-size:2rem; font-weight:900; }
+    .ll-mid { text-align:center; color:var(--muted); font-size:1.2rem; font-weight:900; }
+    .ll-caption { grid-column:1/-1; padding:.75rem 2rem; text-align:center; font-size:.82rem; color:var(--muted); background:var(--bg2); border-top:1px solid var(--line); }
 
     /* ── CYCLE ── */
-    #cycle { background: var(--bg2); }
-    .cycle-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1rem;
-    }
-    .cycle-week {
-      background: var(--bg3);
-      border: 1px solid var(--line);
-      border-radius: 1rem;
-      overflow: hidden;
-    }
-    .cycle-week-header {
-      padding: 0.75rem 1rem;
-      font-size: 0.78rem; font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-    .cw-w1 .cycle-week-header { background: rgba(14,165,233,0.15); color: var(--rs); }
-    .cw-w2 .cycle-week-header { background: rgba(139,92,246,0.15); color: #a78bfa; }
-    .cw-w3 .cycle-week-header { background: rgba(16,185,129,0.12); color: #34d399; }
-    .cw-w4 .cycle-week-header { background: rgba(245,158,11,0.15); color: var(--pgs); }
-    .cycle-events { padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem; }
-    .cycle-event {
-      border-radius: 0.5rem;
-      padding: 0.6rem 0.75rem;
-    }
-    .cycle-event-name { font-size: 0.85rem; font-weight: 700; margin-bottom: 0.15rem; }
-    .cycle-event-sub { font-size: 0.75rem; color: var(--muted); }
-    .ev-open  { background: rgba(71,85,105,0.25); }
-    .ev-open  .cycle-event-name { color: #94a3b8; }
-    .ev-rs    { background: rgba(14,165,233,0.12); }
-    .ev-rs    .cycle-event-name { color: var(--rs); }
-    .ev-pcs   { background: rgba(139,92,246,0.12); }
-    .ev-pcs   .cycle-event-name { color: #a78bfa; }
-    .ev-event { background: rgba(16,185,129,0.10); }
-    .ev-event .cycle-event-name { color: #34d399; }
-    .ev-pgs   { background: rgba(245,158,11,0.12); }
-    .ev-pgs   .cycle-event-name { color: var(--pgs); }
-    .cycle-note {
-      margin-top: 1.5rem;
-      padding: 1rem 1.5rem;
-      background: var(--bg3);
-      border: 1px solid var(--line);
-      border-radius: 0.75rem;
-      font-size: 0.85rem; color: var(--muted);
-      line-height: 1.7;
-    }
+    .cycle-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; }
+    .cycle-week { background:var(--bg3); border:1px solid var(--line); border-radius:1rem; overflow:hidden; }
+    .cycle-week-header { padding:.75rem 1rem; font-size:.78rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+    .cw-w1 .cycle-week-header{background:rgba(14,165,233,.15);color:var(--rs)}
+    .cw-w2 .cycle-week-header{background:rgba(139,92,246,.15);color:#a78bfa}
+    .cw-w3 .cycle-week-header{background:rgba(16,185,129,.12);color:#34d399}
+    .cw-w4 .cycle-week-header{background:rgba(245,158,11,.15);color:var(--pgs)}
+    .cycle-events { padding:1rem; display:flex; flex-direction:column; gap:.75rem; }
+    .cycle-event { border-radius:.5rem; padding:.6rem .75rem; }
+    .cycle-event-name { font-size:.85rem; font-weight:700; margin-bottom:.15rem; }
+    .cycle-event-sub { font-size:.75rem; color:var(--muted); }
+    .ev-open{background:rgba(71,85,105,.25)} .ev-open .cycle-event-name{color:#94a3b8}
+    .ev-rs{background:rgba(14,165,233,.12)} .ev-rs .cycle-event-name{color:var(--rs)}
+    .ev-pcs{background:rgba(139,92,246,.12)} .ev-pcs .cycle-event-name{color:#a78bfa}
+    .ev-event{background:rgba(16,185,129,.10)} .ev-event .cycle-event-name{color:#34d399}
+    .ev-pgs{background:rgba(245,158,11,.12)} .ev-pgs .cycle-event-name{color:var(--pgs)}
+    .cycle-note { margin-top:1.5rem; padding:1rem 1.5rem; background:var(--bg3); border:1px solid var(--line); border-radius:.75rem; font-size:.85rem; color:var(--muted); line-height:1.7; }
 
     /* ── EVENTS ── */
-    #events { background: var(--bg); }
-    .events-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
-    }
-    .event-card {
-      background: var(--bg3);
-      border: 1px solid var(--line);
-      border-radius: 1rem;
-      overflow: hidden;
-    }
-    .event-card-top {
-      padding: 1.5rem;
-      position: relative;
-    }
-    .event-month {
-      font-size: 0.72rem; font-weight: 700;
-      letter-spacing: 0.15em; text-transform: uppercase;
-      color: var(--muted); margin-bottom: 0.5rem;
-    }
-    .event-name { font-size: 1.4rem; font-weight: 900; margin-bottom: 0.25rem; }
-    .event-full { font-size: 0.82rem; color: var(--muted); }
-    .event-card-body { padding: 1.5rem; border-top: 1px solid var(--line); }
-    .event-tag {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      padding: 0.25rem 0.75rem;
-      border-radius: 2rem;
-      font-size: 0.72rem; font-weight: 700;
-      margin-bottom: 0.75rem;
-    }
-    .event-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
-    .event-prize {
-      margin-top: 0.75rem;
-      font-size: 0.85rem; font-weight: 700; color: var(--gold2);
-    }
+    .events-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:1.5rem; }
+    .event-card { background:var(--bg3); border:1px solid var(--line); border-radius:1rem; overflow:hidden; }
+    .event-card-top { padding:1.5rem; position:relative; }
+    .event-month { font-size:.72rem; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); margin-bottom:.5rem; }
+    .event-name { font-size:1.4rem; font-weight:900; margin-bottom:.25rem; }
+    .event-full { font-size:.82rem; color:var(--muted); }
+    .event-card-body { padding:1.5rem; border-top:1px solid var(--line); }
+    .event-tag { display:inline-flex; align-items:center; gap:.4rem; padding:.25rem .75rem; border-radius:2rem; font-size:.72rem; font-weight:700; margin-bottom:.75rem; }
+    .event-desc { font-size:.88rem; color:var(--muted); line-height:1.7; }
+    .event-prize { margin-top:.75rem; font-size:.85rem; font-weight:700; color:var(--gold2); }
+    .ev-pnc .event-card-top{background:linear-gradient(135deg,rgba(139,92,246,.15) 0%,transparent 60%)} .ev-pnc .event-name{color:#c4b5fd} .ev-pnc .event-tag{background:rgba(139,92,246,.2);color:#c4b5fd}
+    .ev-ewc .event-card-top{background:linear-gradient(135deg,rgba(16,185,129,.12) 0%,transparent 60%)} .ev-ewc .event-name{color:#34d399} .ev-ewc .event-tag{background:rgba(16,185,129,.15);color:#34d399}
+    .ev-pgc .event-card-top{background:linear-gradient(135deg,rgba(239,68,68,.18) 0%,transparent 60%)} .ev-pgc .event-name{color:#fca5a5} .ev-pgc .event-tag{background:rgba(239,68,68,.2);color:#fca5a5}
+    .ev-pgo .event-card-top{background:linear-gradient(135deg,rgba(14,165,233,.12) 0%,transparent 60%)} .ev-pgo .event-name{color:var(--rs)} .ev-pgo .event-tag{background:rgba(14,165,233,.15);color:var(--rs)}
 
-    .ev-pnc .event-card-top  { background: linear-gradient(135deg, rgba(139,92,246,0.15) 0%, transparent 60%); }
-    .ev-ewc .event-card-top  { background: linear-gradient(135deg, rgba(16,185,129,0.12) 0%, transparent 60%); }
-    .ev-pgc .event-card-top  { background: linear-gradient(135deg, rgba(239,68,68,0.18) 0%, transparent 60%); }
-    .ev-pgo .event-card-top  { background: linear-gradient(135deg, rgba(14,165,233,0.12) 0%, transparent 60%); }
-
-    .ev-pnc .event-name { color: #c4b5fd; }
-    .ev-ewc .event-name { color: #34d399; }
-    .ev-pgc .event-name { color: #fca5a5; }
-    .ev-pgo .event-name { color: var(--rs); }
-
-    .ev-pnc .event-tag { background: rgba(139,92,246,0.2); color: #c4b5fd; }
-    .ev-ewc .event-tag { background: rgba(16,185,129,0.15); color: #34d399; }
-    .ev-pgc .event-tag { background: rgba(239,68,68,0.2); color: #fca5a5; }
-    .ev-pgo .event-tag { background: rgba(14,165,233,0.15); color: var(--rs); }
-
-    /* ── PRIZE ── */
-    #prize { background: var(--bg2); }
-    .prize-total {
-      text-align: center;
-      margin-bottom: 3rem;
-    }
-    .prize-total .amt {
-      font-size: clamp(3rem, 8vw, 6rem);
-      font-weight: 900;
-      background: linear-gradient(135deg, var(--gold2), #f97316);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      line-height: 1;
-    }
-    .prize-total .amt-sub {
-      font-size: 1rem; color: var(--muted); margin-top: 0.5rem;
-    }
-    .prize-bars { display: flex; flex-direction: column; gap: 1rem; }
-    .prize-bar-row {
-      display: grid;
-      grid-template-columns: 180px 1fr 120px;
-      align-items: center;
-      gap: 1rem;
-    }
-    .pb-label { font-size: 0.85rem; font-weight: 600; }
-    .pb-track {
-      height: 10px;
-      background: var(--line);
-      border-radius: 5px;
-      overflow: hidden;
-    }
-    .pb-fill {
-      height: 100%;
-      border-radius: 5px;
-      transition: width 1s ease;
-    }
-    .pb-amt { font-size: 0.85rem; font-weight: 700; color: var(--gold2); text-align: right; }
+    /* ── PRIZE (home) ── */
+    .prize-total { text-align:center; margin-bottom:3rem; }
+    .prize-total .amt { font-size:clamp(3rem,8vw,6rem); font-weight:900; background:linear-gradient(135deg,var(--gold2),#f97316); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1; }
+    .prize-total .amt-sub { font-size:1rem; color:var(--muted); margin-top:.5rem; }
+    .prize-bars { display:flex; flex-direction:column; gap:1rem; }
+    .prize-bar-row { display:grid; grid-template-columns:180px 1fr 120px; align-items:center; gap:1rem; }
+    .pb-label { font-size:.85rem; font-weight:600; }
+    .pb-track { height:10px; background:var(--line); border-radius:5px; overflow:hidden; }
+    .pb-fill { height:100%; border-radius:5px; }
+    .pb-amt { font-size:.85rem; font-weight:700; color:var(--gold2); text-align:right; }
 
     /* ── AWARDS ── */
-    #awards { background: var(--bg); }
-    .awards-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
+    .awards-grid { display:grid; grid-template-columns:1fr 1fr; gap:2rem; }
+    .award-section { background:var(--bg3); border:1px solid var(--line); border-radius:1rem; overflow:hidden; }
+    .award-section-header { padding:1.25rem 1.5rem; border-bottom:1px solid var(--line); }
+    .award-section-title { font-size:1.05rem; font-weight:800; margin-bottom:.25rem; }
+    .award-section-sub { font-size:.8rem; color:var(--muted); }
+    .award-list { padding:1rem 0; }
+    .award-item { display:flex; align-items:center; padding:.6rem 1.5rem; gap:1rem; }
+    .award-item:hover{background:rgba(255,255,255,.03)}
+    .award-pct { width:48px; text-align:right; font-size:.95rem; font-weight:900; flex-shrink:0; }
+    .award-bar-wrap { flex:1; }
+    .award-bar { height:6px; border-radius:3px; background:linear-gradient(90deg,var(--blue2),var(--purple)); }
+    .award-name { font-size:.85rem; font-weight:600; width:160px; flex-shrink:0; }
+    .award-cat { padding:.4rem 1.5rem; font-size:.7rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); background:var(--bg2); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+
+    /* ── FULL POINTS PAGE ── */
+    .comp-tabs { display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:2rem; }
+    .comp-tab {
+      padding:.45rem 1.1rem; border-radius:.5rem; border:1px solid var(--line);
+      cursor:pointer; font-size:.82rem; font-weight:700;
+      font-family:'Noto Sans KR',sans-serif; background:var(--bg3);
+      color:var(--muted); transition:all .2s;
     }
-    .award-section {
-      background: var(--bg3);
-      border: 1px solid var(--line);
-      border-radius: 1rem;
-      overflow: hidden;
+    .comp-tab:hover { color:var(--text); border-color:rgba(255,255,255,.2); }
+    .comp-tab.active { color:#fff; border-color:transparent; }
+    .comp-tab[data-comp="open"].active  { background:var(--open); }
+    .comp-tab[data-comp="rs"].active    { background:var(--rs); }
+    .comp-tab[data-comp="pcs"].active   { background:var(--pcs); }
+    .comp-tab[data-comp="pgs"].active   { background:var(--pgs); color:#000; }
+    .comp-tab[data-comp="ewc"].active   { background:#10b981; }
+    .comp-tab[data-comp="pgc"].active   { background:var(--pgc); }
+
+    .points-panel { display:none; }
+    .points-panel.active { display:block; }
+    .full-pts-wrap {
+      background:var(--bg3); border:1px solid var(--line); border-radius:1rem; overflow:hidden;
     }
-    .award-section-header {
-      padding: 1.25rem 1.5rem;
-      border-bottom: 1px solid var(--line);
+    .full-pts-header {
+      padding:1.25rem 1.5rem; border-bottom:1px solid var(--line);
+      display:flex; align-items:baseline; gap:1rem;
     }
-    .award-section-title { font-size: 1.05rem; font-weight: 800; margin-bottom: 0.25rem; }
-    .award-section-sub { font-size: 0.8rem; color: var(--muted); }
-    .award-list { padding: 1rem 0; }
-    .award-item {
-      display: flex; align-items: center;
-      padding: 0.6rem 1.5rem;
-      gap: 1rem;
+    .full-pts-name { font-size:1.1rem; font-weight:800; }
+    .full-pts-sub { font-size:.82rem; color:var(--muted); }
+    .pts-grid-full {
+      display:grid;
+      padding:1.5rem;
+      gap:.5rem;
     }
-    .award-item:hover { background: rgba(255,255,255,0.03); }
-    .award-pct {
-      width: 48px; text-align: right;
-      font-size: 0.95rem; font-weight: 900;
-      flex-shrink: 0;
+    .pts-row {
+      display:grid; grid-template-columns:80px 1fr 80px;
+      align-items:center; gap:1rem;
+      padding:.5rem .75rem;
+      border-radius:.5rem;
+      transition:background .15s;
     }
-    .award-bar-wrap { flex: 1; }
-    .award-bar {
-      height: 6px; border-radius: 3px;
-      background: linear-gradient(90deg, var(--blue2), var(--purple));
+    .pts-row:hover { background:rgba(255,255,255,.04); }
+    .pts-row.top3 { background:rgba(255,255,255,.06); }
+    .pts-rank { font-size:.9rem; font-weight:700; color:var(--muted); }
+    .pts-bar-wrap { position:relative; }
+    .pts-bar-inner { height:8px; border-radius:4px; }
+    .pts-val { font-size:1rem; font-weight:900; text-align:right; }
+
+    /* ── REGIONS PAGE ── */
+    .region-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; margin-bottom:3rem; }
+    .region-card {
+      background:var(--bg3); border:1px solid var(--line); border-radius:1rem;
+      overflow:hidden; transition:transform .2s;
     }
-    .award-name { font-size: 0.85rem; font-weight: 600; width: 140px; flex-shrink: 0; }
-    .award-sub { font-size: 0.75rem; color: var(--muted); }
-    .award-cat {
-      padding: 0.4rem 1.5rem;
-      font-size: 0.7rem; font-weight: 700;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--muted); background: var(--bg2);
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
+    .region-card:hover { transform:translateY(-4px); }
+    .region-card-top { padding:1.25rem 1.5rem; border-bottom:1px solid var(--line); }
+    .region-continent { font-size:.68rem; font-weight:700; letter-spacing:.15em; text-transform:uppercase; margin-bottom:.4rem; }
+    .region-name { font-size:1.2rem; font-weight:900; }
+    .region-full { font-size:.8rem; color:var(--muted); margin-top:.2rem; }
+    .region-card-body { padding:1.25rem 1.5rem; display:flex; flex-direction:column; gap:.75rem; }
+    .region-stat { display:flex; justify-content:space-between; align-items:center; }
+    .region-stat-label { font-size:.8rem; color:var(--muted); }
+    .region-stat-val { font-size:.88rem; font-weight:700; }
+    .region-prize-highlight { font-size:1.1rem; font-weight:900; color:var(--gold2); }
+
+    .continent-ASIA .region-continent { color:var(--rs); }
+    .continent-APAC .region-continent { color:#34d399; }
+    .continent-EMEA .region-continent { color:#a78bfa; }
+    .continent-AMs  .region-continent { color:var(--pgs); }
+    .continent-ASIA .region-card-top { border-top:3px solid var(--rs); }
+    .continent-APAC .region-card-top { border-top:3px solid #34d399; }
+    .continent-EMEA .region-card-top { border-top:3px solid #a78bfa; }
+    .continent-AMs  .region-card-top { border-top:3px solid var(--pgs); }
+
+    .pcs-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem; }
+    .pcs-card {
+      background:var(--bg3); border:1px solid var(--line); border-radius:1rem;
+      padding:1.5rem; text-align:center;
     }
+    .pcs-card-region { font-size:.72rem; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:var(--pcs); filter:brightness(1.3); margin-bottom:.5rem; }
+    .pcs-card-name { font-size:1.3rem; font-weight:900; margin-bottom:1rem; }
+    .pcs-card-stat { margin-bottom:.5rem; }
+    .pcs-card-stat .val { font-size:1.2rem; font-weight:900; }
+    .pcs-card-stat .lbl { font-size:.75rem; color:var(--muted); }
+    .pcs-card-prize { color:var(--gold2); font-weight:700; font-size:.9rem; margin-top:.75rem; }
+
+    /* ── FULL PRIZE PAGE ── */
+    .prize-section-title {
+      font-size:1rem; font-weight:800; margin:2.5rem 0 1rem;
+      padding-bottom:.5rem; border-bottom:1px solid var(--line);
+      display:flex; align-items:center; gap:.75rem;
+    }
+    .prize-section-badge {
+      font-size:.7rem; font-weight:700; padding:.2rem .6rem;
+      border-radius:2rem; letter-spacing:.08em; text-transform:uppercase;
+    }
+    .prize-full-table {
+      width:100%; border-collapse:collapse;
+      background:var(--bg3); border:1px solid var(--line);
+      border-radius:1rem; overflow:hidden;
+      margin-bottom:1.5rem;
+    }
+    .prize-full-table th {
+      background:var(--bg2); padding:.75rem 1rem;
+      text-align:left; font-size:.78rem; font-weight:700;
+      color:var(--muted); border-bottom:1px solid var(--line);
+    }
+    .prize-full-table td {
+      padding:.7rem 1rem; font-size:.88rem;
+      border-bottom:1px solid rgba(30,42,66,.6);
+    }
+    .prize-full-table tr:last-child td { border-bottom:none; }
+    .prize-full-table tr:nth-child(even) td { background:rgba(255,255,255,.02); }
+    .prize-full-table .total-row td { font-weight:800; color:var(--gold2); background:rgba(251,191,36,.06); }
+    .prize-full-table .amt { font-weight:700; color:var(--gold2); }
+    .prize-big-num {
+      text-align:center; padding:2.5rem;
+      background:var(--bg3); border:1px solid var(--line); border-radius:1rem;
+      margin-bottom:2rem;
+    }
+    .prize-big-num .big { font-size:4rem; font-weight:900; background:linear-gradient(135deg,var(--gold2),#f97316); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .prize-big-num .sub { color:var(--muted); font-size:.9rem; margin-top:.5rem; }
 
     /* ── FOOTER ── */
-    footer {
-      padding: 2.5rem 1.5rem;
-      border-top: 1px solid var(--line);
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.8rem;
-      background: var(--bg);
-    }
+    footer { padding:2.5rem 1.5rem; border-top:1px solid var(--line); text-align:center; color:var(--muted); font-size:.8rem; }
+
+    /* ── FADE IN ── */
+    .fade-in { opacity:0; transform:translateY(20px); transition:opacity .6s ease,transform .6s ease; }
+    .fade-in.visible { opacity:1; transform:none; }
 
     /* ── RESPONSIVE ── */
-    @media (max-width: 768px) {
-      .cycle-grid { grid-template-columns: 1fr 1fr; }
-      .pt-grid { grid-template-columns: repeat(3, 1fr); }
-      .tier-card { grid-template-columns: 44px 1fr; }
-      .tier-meta { display: none; }
-      .prize-bar-row { grid-template-columns: 120px 1fr 80px; }
-      .ladder-logic { grid-template-columns: 1fr 40px 1fr; }
-      .ll-side { padding: 1rem; }
-      .awards-grid { grid-template-columns: 1fr; }
+    @media(max-width:768px){
+      .cycle-grid{grid-template-columns:1fr 1fr}
+      .pt-grid{grid-template-columns:repeat(3,1fr)}
+      .tier-meta{display:none}
+      .tier-card{grid-template-columns:44px 1fr}
+      .prize-bar-row{grid-template-columns:110px 1fr 80px}
+      .ladder-logic{grid-template-columns:1fr 40px 1fr}
+      .ll-side{padding:1rem}
+      .awards-grid{grid-template-columns:1fr}
+      .nav-top{padding:0 1rem}
+      .page-tabs{gap:.1rem}
+      .tab-btn{padding:.35rem .6rem; font-size:.75rem}
     }
-    @media (max-width: 480px) {
-      .hero-stats { gap: 1.5rem; }
-      .cycle-grid { grid-template-columns: 1fr; }
-      .pt-grid { grid-template-columns: repeat(2, 1fr); }
+    @media(max-width:480px){
+      .cycle-grid{grid-template-columns:1fr}
+      .pt-grid{grid-template-columns:repeat(2,1fr)}
+      .hero-stats{gap:1.5rem}
     }
-
-    /* ── FADE-IN ── */
-    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
-    .fade-in.visible { opacity: 1; transform: none; }
   </style>
 </head>
 <body>
 
-<!-- NAV -->
+<!-- ══ NAV ══════════════════════════════════════════════ -->
 <nav>
-  <div class="nav-logo">PUBG ESPORTS 2027</div>
-  <div class="nav-links">
+  <div class="nav-top">
+    <div class="nav-logo">PUBG ESPORTS 2027</div>
+    <div class="page-tabs">
+      <button class="tab-btn active" data-page="home"    onclick="showPage('home')">홈</button>
+      <button class="tab-btn"        data-page="regions" onclick="showPage('regions')">지역별 대회</button>
+      <button class="tab-btn"        data-page="points"  onclick="showPage('points')">전체 포인트</button>
+      <button class="tab-btn"        data-page="prizes"  onclick="showPage('prizes')">상금 전체</button>
+    </div>
+  </div>
+  <div class="nav-scroll" id="home-links">
     <a href="#ladder">대회 구조</a>
-    <a href="#points">포인트</a>
+    <a href="#points-simple">포인트</a>
     <a href="#cycle">일정</a>
     <a href="#events">주요 이벤트</a>
     <a href="#prize">상금</a>
+    <a href="#awards">시상</a>
   </div>
 </nav>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-eyebrow">2027 Global Circuit — New Structure</div>
-  <h1>잘하면 올라간다.<br>못하면 내려온다.</h1>
-  <p class="hero-sub">
-    2027년, PUBG Esports는 완전히 새로운 방식으로 움직입니다.<br>
-    어떤 팀이든, 어느 지역이든 — 실력만 있으면 세계 무대까지 오를 수 있습니다.
-  </p>
-  <div class="hero-stats">
-    <div class="hero-stat">
-      <span class="num">4</span>
-      <span class="label">티어 대회 구조</span>
+<!-- ══════════════════════════════════════════════════════
+     PAGE: HOME
+════════════════════════════════════════════════════════ -->
+<div id="page-home" class="page active">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">2027 Global Circuit — New Structure</div>
+    <h1>잘하면 올라간다.<br>못하면 내려온다.</h1>
+    <p class="hero-sub">2027년, PUBG Esports는 완전히 새로운 방식으로 움직입니다.<br>어떤 팀이든, 어느 지역이든 — 실력만 있으면 세계 무대까지 오를 수 있습니다.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><span class="num">4</span><span class="label">티어 대회 구조</span></div>
+      <div class="hero-stat"><span class="num">9</span><span class="label">참여 지역</span></div>
+      <div class="hero-stat"><span class="num">$6.18M</span><span class="label">연간 총 상금</span></div>
+      <div class="hero-stat"><span class="num">40+</span><span class="label">연간 중계 주</span></div>
     </div>
-    <div class="hero-stat">
-      <span class="num">9</span>
-      <span class="label">참여 지역</span>
-    </div>
-    <div class="hero-stat">
-      <span class="num">$6.18M</span>
-      <span class="label">연간 총 상금</span>
-    </div>
-    <div class="hero-stat">
-      <span class="num">40+</span>
-      <span class="label">연간 중계 주</span>
+    <div class="scroll-hint">
+      <span>스크롤</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
     </div>
   </div>
-  <div class="scroll-hint">
-    <span>스크롤</span>
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M19 9l-7 7-7-7"/>
-    </svg>
-  </div>
-</div>
 
-<!-- TIER LADDER -->
-<section id="ladder">
-  <div class="container">
-    <div class="fade-in">
-      <div class="section-label">Circuit Structure</div>
-      <h2 class="section-title">Open에서 PGC까지,<br>하나의 사다리</h2>
-      <p class="section-desc">
-        승강전 없이 포인트만으로 결정됩니다.
-        이번 달 잘했으면 다음 달엔 더 큰 무대에 — 반대도 마찬가지입니다.
-      </p>
-    </div>
-
-    <div class="tiers fade-in">
-
-      <div class="tier-card" data-tier="pgc">
-        <div class="tier-icon">🏆</div>
-        <div class="tier-info">
-          <div class="tier-name">PGC — 월드 챔피언십</div>
-          <div class="tier-desc">연 1회 (12월) · LAN · 32팀 · 이 무대에서 이기면, 그 해의 세계 챔피언</div>
-        </div>
-        <div class="tier-meta">
-          <div class="tier-teams">32</div>
-          <div class="tier-teams-label">팀</div>
-          <div class="tier-prize">$1,500,000</div>
-        </div>
+  <!-- LADDER -->
+  <section id="ladder" style="background:var(--bg2)">
+    <div class="container">
+      <div class="fade-in">
+        <div class="section-label">Circuit Structure</div>
+        <h2 class="section-title">Open에서 PGC까지,<br>하나의 사다리</h2>
+        <p class="section-desc">승강전 없이 포인트만으로 결정됩니다. 이번 달 잘했으면 다음 달엔 더 큰 무대에 — 반대도 마찬가지입니다.</p>
       </div>
-
-      <div class="ladder-arrow">↑ PGS 상위권 = PGC 직행 슬롯</div>
-
-      <div class="tier-card" data-tier="pgs">
-        <div class="tier-icon">🎮</div>
-        <div class="tier-info">
-          <div class="tier-name">PGS — 글로벌 LAN</div>
-          <div class="tier-desc">연 6회 · 현장 오프라인 · 16팀 · 전 세계 최강들이 같은 물리 공간에서 맞붙는 유일한 무대</div>
+      <div class="tiers fade-in">
+        <div class="tier-card" data-tier="pgc">
+          <div class="tier-icon">🏆</div>
+          <div class="tier-info"><div class="tier-name">PGC — 월드 챔피언십</div><div class="tier-desc">연 1회 (12월) · LAN · 32팀 · 이 무대에서 이기면, 그 해의 세계 챔피언</div></div>
+          <div class="tier-meta"><div class="tier-teams">32</div><div class="tier-teams-label">팀</div><div class="tier-prize">$1,500,000</div></div>
         </div>
-        <div class="tier-meta">
-          <div class="tier-teams">16</div>
-          <div class="tier-teams-label">팀</div>
-          <div class="tier-prize">$150,000 × 6회</div>
+        <div class="ladder-arrow">↑ PGS 상위권 → PGC 직행 슬롯</div>
+        <div class="tier-card" data-tier="pgs">
+          <div class="tier-icon">🎮</div>
+          <div class="tier-info"><div class="tier-name">PGS — 글로벌 LAN</div><div class="tier-desc">연 6회 · 현장 오프라인 · 16팀 · 전 세계 최강들이 같은 물리 공간에서 맞붙는 유일한 무대</div></div>
+          <div class="tier-meta"><div class="tier-teams">16</div><div class="tier-teams-label">팀</div><div class="tier-prize">$150,000 × 6회</div></div>
         </div>
-      </div>
-
-      <div class="ladder-arrow">↑ PCS 상위 랭킹 → PGS 진출</div>
-
-      <div class="tier-card" data-tier="pcs">
-        <div class="tier-icon">🌍</div>
-        <div class="tier-info">
-          <div class="tier-name">PCS — 대륙 온라인 리그</div>
-          <div class="tier-desc">연 8회 · ASIA · APAC · EMEA · AMs 4개 권역, 각 16팀 · 지역 대회에서 올라온 팀들의 대륙 무대</div>
+        <div class="ladder-arrow">↑ PCS 상위 랭킹 → PGS 진출</div>
+        <div class="tier-card" data-tier="pcs">
+          <div class="tier-icon">🌍</div>
+          <div class="tier-info"><div class="tier-name">PCS — 대륙 온라인 리그</div><div class="tier-desc">연 8회 · ASIA · APAC · EMEA · AMs 4개 권역, 각 16팀 · 지역 대회에서 올라온 팀들의 대륙 무대</div></div>
+          <div class="tier-meta"><div class="tier-teams">16</div><div class="tier-teams-label">팀/권역</div><div class="tier-prize">$140,000 × 8회/권역</div></div>
         </div>
-        <div class="tier-meta">
-          <div class="tier-teams">16</div>
-          <div class="tier-teams-label">팀/권역</div>
-          <div class="tier-prize">$140,000 × 8회/권역</div>
+        <div class="ladder-arrow">↑ RS 1위(50pt) vs PCS 최하위(5pt) → 자연스럽게 밀어내는 구조</div>
+        <div class="tier-card" data-tier="rs">
+          <div class="tier-icon">🏅</div>
+          <div class="tier-info"><div class="tier-name">Regional Series — 지역 리그</div><div class="tier-desc">연 8회 · 9개 지역 온라인 대회 · PWS·PCL·PTS·PVS·PMS·MENA·EU·AM·BR</div></div>
+          <div class="tier-meta"><div class="tier-teams">9</div><div class="tier-teams-label">지역</div><div class="tier-prize">지역별 차등</div></div>
         </div>
-      </div>
-
-      <div class="ladder-arrow">↑ RS 1위 (50pt) > PCS 최하위 (5pt) → 자연스럽게 밀려나는 구조</div>
-
-      <div class="tier-card" data-tier="rs">
-        <div class="tier-icon">🏅</div>
-        <div class="tier-info">
-          <div class="tier-name">Regional Series — 지역 리그</div>
-          <div class="tier-desc">연 8회 · 9개 지역 온라인 대회 · PWS·PCL·PTS·PVS·PMS·MENA·EU·AM·BR · 지역 프로씬의 중심</div>
+        <div class="ladder-arrow">↑ Open 1위(10pt) 꾸준히 쌓으면 RS 진입 가능</div>
+        <div class="tier-card" data-tier="open">
+          <div class="tier-icon">🚪</div>
+          <div class="tier-info"><div class="tier-name">Open 예선 — 누구나 참가</div><div class="tier-desc">월 최소 2회 · 4인 스쿼드면 OK · 팀 수 제한 없음 · 여기서 시작해서 PGC까지 올라갈 수 있습니다</div></div>
+          <div class="tier-meta"><div class="tier-teams">∞</div><div class="tier-teams-label">팀</div><div class="tier-prize">지역별 상금 지급</div></div>
         </div>
-        <div class="tier-meta">
-          <div class="tier-teams">9</div>
-          <div class="tier-teams-label">지역</div>
-          <div class="tier-prize">지역별 상금 차등</div>
-        </div>
-      </div>
-
-      <div class="ladder-arrow">↑ Open 1위 (10pt) 꾸준히 쌓으면 RS 진입 가능</div>
-
-      <div class="tier-card" data-tier="open">
-        <div class="tier-icon">🚪</div>
-        <div class="tier-info">
-          <div class="tier-name">Open 예선 — 누구나 참가</div>
-          <div class="tier-desc">월 최소 2회 · 4인 스쿼드면 OK · 팀 수 제한 없음 · 여기서 시작해서 PGC까지 올라갈 수 있습니다</div>
-        </div>
-        <div class="tier-meta">
-          <div class="tier-teams">∞</div>
-          <div class="tier-teams-label">팀</div>
-          <div class="tier-prize">지역별 상금 지급</div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- POINTS -->
-<section id="points">
-  <div class="container">
-    <div class="fade-in">
-      <div class="section-label">PUBG Points</div>
-      <h2 class="section-title">포인트, 딱 세 가지만 알면 됩니다</h2>
-      <p class="section-desc">
-        복잡하게 계산할 필요 없습니다.<br>
-        잘하면 쌓이고, 쉬면 사라지고, 높으면 올라갑니다.
-      </p>
-    </div>
-
-    <div class="points-simple fade-in">
-      <div class="point-step">
-        <div class="step-num">1</div>
-        <h3>대회에서 잘하면 → 포인트 획득</h3>
-        <p>순위가 높을수록 더 많은 포인트. 1위가 16위보다 훨씬 많이 받습니다. 모든 순위에 고유한 점수가 배정됩니다.</p>
-      </div>
-      <div class="point-step">
-        <div class="step-num">2</div>
-        <h3>포인트가 높으면 → 더 큰 대회 참가</h3>
-        <p>다음 대회 참가 자격은 현재 포인트 랭킹으로 결정됩니다. 상위권이면 PGS, 하위권이면 RS. 별도 심사 없음.</p>
-      </div>
-      <div class="point-step">
-        <div class="step-num">3</div>
-        <h3>52주 뒤엔 자동 소멸</h3>
-        <p>포인트는 얻고 나서 1년(52주) 후 사라집니다. 꾸준히 잘해야 순위를 유지할 수 있습니다. 연간 리셋은 없습니다.</p>
       </div>
     </div>
+  </section>
 
-    <div class="points-table-wrap fade-in">
-      <div class="points-table-title">대회별 1위 포인트 비교</div>
-      <div class="pt-grid">
-        <div class="pt-cell" data-tier="open">
-          <div class="pt-comp">Open</div>
-          <div class="pt-pts">10</div>
-          <div class="pt-label">pt / 주 1회</div>
-        </div>
-        <div class="pt-cell" data-tier="rs">
-          <div class="pt-comp">RS</div>
-          <div class="pt-pts">50</div>
-          <div class="pt-label">pt</div>
-        </div>
-        <div class="pt-cell" data-tier="pcs">
-          <div class="pt-comp">PCS</div>
-          <div class="pt-pts">150</div>
-          <div class="pt-label">pt</div>
-        </div>
-        <div class="pt-cell" data-tier="pgs">
-          <div class="pt-comp">PGS</div>
-          <div class="pt-pts">500</div>
-          <div class="pt-label">pt</div>
-        </div>
-        <div class="pt-cell" data-tier="ewc">
-          <div class="pt-comp">EWC</div>
-          <div class="pt-pts">700</div>
-          <div class="pt-label">pt</div>
-        </div>
-        <div class="pt-cell" data-tier="pgc">
-          <div class="pt-comp">PGC</div>
-          <div class="pt-pts">1000</div>
-          <div class="pt-label">pt</div>
-        </div>
+  <!-- POINTS SIMPLE -->
+  <section id="points-simple">
+    <div class="container">
+      <div class="fade-in">
+        <div class="section-label">PUBG Points</div>
+        <h2 class="section-title">포인트, 딱 세 가지만 알면 됩니다</h2>
+        <p class="section-desc">복잡하게 계산할 필요 없습니다. 잘하면 쌓이고, 쉬면 사라지고, 높으면 올라갑니다.</p>
       </div>
-      <div class="pt-note">
-        ✦ 상위 대회 꼴찌 &lt; 하위 대회 우승 — 예: RS 1위(50pt) vs PCS 16위(5pt). 이 차이가 승강의 핵심입니다.<br>
-        ✦ PNC·PGO는 포인트 미부여 (국가대항전·특별 오픈 성격).
+      <div class="points-simple fade-in">
+        <div class="point-step"><div class="step-num">1</div><h3>대회에서 잘하면 → 포인트 획득</h3><p>순위가 높을수록 더 많은 포인트. 1위가 16위보다 훨씬 많이 받습니다. 모든 순위에 고유한 점수가 배정됩니다.</p></div>
+        <div class="point-step"><div class="step-num">2</div><h3>포인트가 높으면 → 더 큰 대회 참가</h3><p>다음 대회 참가 자격은 현재 포인트 랭킹으로 결정됩니다. 상위권이면 PGS, 하위권이면 RS. 별도 심사 없음.</p></div>
+        <div class="point-step"><div class="step-num">3</div><h3>52주 뒤엔 자동 소멸</h3><p>포인트는 얻고 나서 1년(52주) 후 사라집니다. 꾸준히 잘해야 순위를 유지할 수 있습니다. 연간 리셋은 없습니다.</p></div>
+      </div>
+      <div class="points-table-wrap fade-in">
+        <div class="points-table-title">대회별 1위 포인트 비교</div>
+        <div class="pt-grid">
+          <div class="pt-cell" data-tier="open"><div class="pt-comp">Open</div><div class="pt-pts">10</div><div class="pt-label">pt / 주 1회</div></div>
+          <div class="pt-cell" data-tier="rs"><div class="pt-comp">RS</div><div class="pt-pts">50</div><div class="pt-label">pt</div></div>
+          <div class="pt-cell" data-tier="pcs"><div class="pt-comp">PCS</div><div class="pt-pts">150</div><div class="pt-label">pt</div></div>
+          <div class="pt-cell" data-tier="pgs"><div class="pt-comp">PGS</div><div class="pt-pts">500</div><div class="pt-label">pt</div></div>
+          <div class="pt-cell" data-tier="ewc"><div class="pt-comp">EWC</div><div class="pt-pts">700</div><div class="pt-label">pt</div></div>
+          <div class="pt-cell" data-tier="pgc"><div class="pt-comp">PGC</div><div class="pt-pts">1000</div><div class="pt-label">pt</div></div>
+        </div>
+        <div class="pt-note">✦ 전체 포인트 테이블 (모든 순위) → 상단 <strong>전체 포인트</strong> 탭에서 확인하세요.<br>✦ PNC·PGO는 포인트 미부여 (국가대항전·특별 오픈 성격).</div>
+      </div>
+      <div class="ladder-logic fade-in">
+        <div class="ll-side ll-left"><div class="ll-comp">Regional Series</div><div class="ll-pts" style="color:var(--rs)">50pt</div><div class="ll-result">RS 우승팀</div></div>
+        <div class="ll-mid">&gt;</div>
+        <div class="ll-side ll-right"><div class="ll-comp">PCS</div><div class="ll-pts" style="color:#a78bfa">5pt</div><div class="ll-result">PCS 최하위팀</div></div>
+        <div class="ll-caption">RS를 지배하는 팀이 PCS 하위권 팀을 밀어내는 자연스러운 구조 — 승강전 없이 포인트로만 작동합니다</div>
       </div>
     </div>
+  </section>
 
-    <div class="ladder-logic fade-in">
-      <div class="ll-side ll-left">
-        <div class="ll-comp">Regional Series</div>
-        <div class="ll-pts" style="color: var(--rs);">50pt</div>
-        <div class="ll-result">RS 우승팀</div>
+  <!-- CYCLE -->
+  <section id="cycle" style="background:var(--bg2)">
+    <div class="container">
+      <div class="fade-in">
+        <div class="section-label">4-Week Cycle</div>
+        <h2 class="section-title">4주가 한 사이클,<br>매달 반복됩니다</h2>
+        <p class="section-desc">어떤 주에 어떤 대회가 열리는지 외울 수 있습니다.</p>
       </div>
-      <div class="ll-mid">&gt;</div>
-      <div class="ll-side ll-right">
-        <div class="ll-comp">PCS</div>
-        <div class="ll-pts" style="color: var(--pcs); filter: brightness(1.3);">5pt</div>
-        <div class="ll-result">PCS 최하위팀</div>
+      <div class="cycle-grid fade-in">
+        <div class="cycle-week cw-w1"><div class="cycle-week-header">Week 1</div><div class="cycle-events"><div class="cycle-event ev-open"><div class="cycle-event-name">Open 예선</div><div class="cycle-event-sub">평일 · 온라인 · 누구나</div></div><div class="cycle-event ev-rs"><div class="cycle-event-name">Regional Series</div><div class="cycle-event-sub">주말 (토·일) · 온라인</div></div></div></div>
+        <div class="cycle-week cw-w2"><div class="cycle-week-header">Week 2</div><div class="cycle-events"><div class="cycle-event ev-open"><div class="cycle-event-name">Open 예선</div><div class="cycle-event-sub">평일 · 온라인 (선택)</div></div><div class="cycle-event ev-pcs"><div class="cycle-event-name">PCS</div><div class="cycle-event-sub">주말 (토·일) · 온라인 · 4대륙</div></div></div></div>
+        <div class="cycle-week cw-w3"><div class="cycle-week-header">Week 3</div><div class="cycle-events"><div class="cycle-event ev-event"><div class="cycle-event-name">Event Match</div><div class="cycle-event-sub">주말 · 스트리머·셀러브리티 콜라보</div></div></div></div>
+        <div class="cycle-week cw-w4"><div class="cycle-week-header">Week 4</div><div class="cycle-events"><div class="cycle-event ev-pgs"><div class="cycle-event-name">PGS 🏟️</div><div class="cycle-event-sub">금·토·일 · LAN 오프라인 · 16팀</div></div></div></div>
       </div>
-      <div class="ll-caption">
-        RS를 지배하는 팀이 PCS 하위권 팀을 밀어내는 자연스러운 구조 — 승강전 없이 포인트로만 작동합니다
+      <div class="cycle-note fade-in">🗺️ <strong>맵 사이클:</strong> 각 사이클마다 단일 맵이 지정됩니다. Open·RS·PCS·PGS 전체가 같은 맵으로 진행됩니다. 어떤 팀이 이 맵에서 강한지, 사이클마다 새로운 서사가 만들어집니다.</div>
+    </div>
+  </section>
+
+  <!-- EVENTS -->
+  <section id="events">
+    <div class="container">
+      <div class="fade-in"><div class="section-label">Special Events</div><h2 class="section-title">연간 빅 이벤트</h2></div>
+      <div class="events-grid fade-in">
+        <div class="event-card ev-pnc"><div class="event-card-top"><div class="event-month">June · 6월</div><div class="event-name">PNC</div><div class="event-full">PUBG Nations Cup</div></div><div class="event-card-body"><div class="event-tag">🏳️ 국가대항전</div><div class="event-desc">16개 국가 대표 팀이 맞붙는 국가대항전. 금요일엔 스트리머 이벤트 매치, 토~일엔 본선. 포인트 미부여.</div><div class="event-prize">상금 $500,000</div></div></div>
+        <div class="event-card ev-ewc"><div class="event-card-top"><div class="event-month">Jul–Aug · 7~8월</div><div class="event-name">EWC</div><div class="event-full">Esports World Cup</div></div><div class="event-card-body"><div class="event-tag">🌐 글로벌 초청</div><div class="event-desc">24팀 참가. PUBG Points 부여 (1위 700pt). PGS와 PGC 사이 위치의 포인트 비중.</div><div class="event-prize">EWC 주관 별도 상금</div></div></div>
+        <div class="event-card ev-pgo"><div class="event-card-top"><div class="event-month">November · 11월</div><div class="event-name">PGO</div><div class="event-full">PUBG Global Open</div></div><div class="event-card-body"><div class="event-tag">🎯 오픈 포맷</div><div class="event-desc">인게임 경쟁전과 연계된 오픈 대회. West/East 2개 권역, 듀오+스쿼드 운영. 포인트 미부여.</div><div class="event-prize">상금 $600,000</div></div></div>
+        <div class="event-card ev-pgc"><div class="event-card-top"><div class="event-month">December · 12월</div><div class="event-name">PGC</div><div class="event-full">PUBG Global Championship</div></div><div class="event-card-body"><div class="event-tag">🏆 World Championship</div><div class="event-desc">32팀. 그룹스테이지(24팀) + 그랜드파이널(8팀). 이 대회 우승팀이 그 해의 유일한 World Champion.</div><div class="event-prize">상금 $1,500,000</div></div></div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- CYCLE -->
-<section id="cycle">
-  <div class="container">
-    <div class="fade-in">
-      <div class="section-label">4-Week Cycle</div>
-      <h2 class="section-title">4주가 한 사이클,<br>매달 반복됩니다</h2>
-      <p class="section-desc">
-        어떤 주에 어떤 대회가 열리는지 외울 수 있습니다.<br>
-        F1이 매 레이스마다 서킷을 바꾸듯, 매 사이클마다 새로운 맵으로 진행됩니다.
-      </p>
+  <!-- PRIZE SUMMARY -->
+  <section id="prize" style="background:var(--bg2)">
+    <div class="container">
+      <div class="fade-in"><div class="section-label">Prize Pool</div><h2 class="section-title">상금 구조</h2></div>
+      <div class="prize-total fade-in"><div class="amt">$6,180,000</div><div class="amt-sub">2027 시즌 총 상금 (약 85억 원) — EWC 별도 | 상금 전체 내역 → 상단 탭</div></div>
+      <div class="prize-bars fade-in">
+        <div class="prize-bar-row"><div class="pb-label">PGC</div><div class="pb-track"><div class="pb-fill" style="width:24.3%;background:linear-gradient(90deg,#ef4444,#dc2626)"></div></div><div class="pb-amt">$1,500,000</div></div>
+        <div class="prize-bar-row"><div class="pb-label">PGS × 6</div><div class="pb-track"><div class="pb-fill" style="width:14.6%;background:linear-gradient(90deg,#f59e0b,#d97706)"></div></div><div class="pb-amt">$900,000</div></div>
+        <div class="prize-bar-row"><div class="pb-label">PNC</div><div class="pb-track"><div class="pb-fill" style="width:8.1%;background:linear-gradient(90deg,#8b5cf6,#7c3aed)"></div></div><div class="pb-amt">$500,000</div></div>
+        <div class="prize-bar-row"><div class="pb-label">Regional Series</div><div class="pb-track"><div class="pb-fill" style="width:23%;background:linear-gradient(90deg,#0ea5e9,#0284c7)"></div></div><div class="pb-amt">$1,424,000</div></div>
+        <div class="prize-bar-row"><div class="pb-label">PCS (4권역)</div><div class="pb-track"><div class="pb-fill" style="width:18.1%;background:linear-gradient(90deg,#7c3aed,#6d28d9)"></div></div><div class="pb-amt">$1,120,000</div></div>
+        <div class="prize-bar-row"><div class="pb-label">PGO</div><div class="pb-track"><div class="pb-fill" style="width:9.7%;background:linear-gradient(90deg,#10b981,#059669)"></div></div><div class="pb-amt">$600,000</div></div>
+        <div class="prize-bar-row"><div class="pb-label">Open 예선</div><div class="pb-track"><div class="pb-fill" style="width:2.2%;background:linear-gradient(90deg,#64748b,#475569)"></div></div><div class="pb-amt">$136,000</div></div>
+      </div>
     </div>
+  </section>
 
-    <div class="cycle-grid fade-in">
-      <div class="cycle-week cw-w1">
-        <div class="cycle-week-header">Week 1</div>
-        <div class="cycle-events">
-          <div class="cycle-event ev-open">
-            <div class="cycle-event-name">Open 예선</div>
-            <div class="cycle-event-sub">평일 · 온라인 · 누구나</div>
-          </div>
-          <div class="cycle-event ev-rs">
-            <div class="cycle-event-name">Regional Series</div>
-            <div class="cycle-event-sub">주말 (토·일) · 온라인</div>
+  <!-- AWARDS -->
+  <section id="awards">
+    <div class="container">
+      <div class="fade-in"><div class="section-label">Annual Awards</div><h2 class="section-title">연간 시상</h2><p class="section-desc">매 시즌 비시즌(1~2월)에 특별 시상식. PNC·PGC 크라우드펀딩 풀에서 재원 조달.</p></div>
+      <div class="awards-grid fade-in">
+        <div class="award-section">
+          <div class="award-section-header"><div class="award-section-title">Special Awards — 개인상</div><div class="award-section-sub">PNC 크라우드펀딩 풀 100% 배분</div></div>
+          <div class="award-list">
+            <div class="award-cat">시즌 최고 성과</div>
+            <div class="award-item"><div class="award-name">Season MVP</div><div class="award-bar-wrap"><div class="award-bar" style="width:100%"></div></div><div class="award-pct" style="color:var(--gold2)">30%</div></div>
+            <div class="award-item"><div class="award-name">Kill Leader</div><div class="award-bar-wrap"><div class="award-bar" style="width:60%"></div></div><div class="award-pct">18%</div></div>
+            <div class="award-item"><div class="award-name">Rookie of the Year</div><div class="award-bar-wrap"><div class="award-bar" style="width:33%"></div></div><div class="award-pct">10%</div></div>
+            <div class="award-item"><div class="award-name">Under 23</div><div class="award-bar-wrap"><div class="award-bar" style="width:27%"></div></div><div class="award-pct">8%</div></div>
+            <div class="award-cat">팬 선택</div>
+            <div class="award-item"><div class="award-name">Fan Favorite</div><div class="award-bar-wrap"><div class="award-bar" style="width:47%;background:linear-gradient(90deg,#ec4899,#db2777)"></div></div><div class="award-pct">14%</div></div>
+            <div class="award-item"><div class="award-name">Popularity Award</div><div class="award-bar-wrap"><div class="award-bar" style="width:30%;background:linear-gradient(90deg,#ec4899,#db2777)"></div></div><div class="award-pct">9%</div></div>
+            <div class="award-cat">PUBG First Team (포지션상)</div>
+            <div class="award-item"><div class="award-name">Order</div><div class="award-bar-wrap"><div class="award-bar" style="width:10%;background:linear-gradient(90deg,#f59e0b,#d97706)"></div></div><div class="award-pct">3%</div></div>
+            <div class="award-item"><div class="award-name">Supporter</div><div class="award-bar-wrap"><div class="award-bar" style="width:10%;background:linear-gradient(90deg,#f59e0b,#d97706)"></div></div><div class="award-pct">3%</div></div>
+            <div class="award-item"><div class="award-name">AR</div><div class="award-bar-wrap"><div class="award-bar" style="width:10%;background:linear-gradient(90deg,#f59e0b,#d97706)"></div></div><div class="award-pct">3%</div></div>
+            <div class="award-item"><div class="award-name">DMR</div><div class="award-bar-wrap"><div class="award-bar" style="width:7%;background:linear-gradient(90deg,#f59e0b,#d97706)"></div></div><div class="award-pct">2%</div></div>
           </div>
         </div>
-      </div>
-
-      <div class="cycle-week cw-w2">
-        <div class="cycle-week-header">Week 2</div>
-        <div class="cycle-events">
-          <div class="cycle-event ev-open">
-            <div class="cycle-event-name">Open 예선</div>
-            <div class="cycle-event-sub">평일 · 온라인 (선택)</div>
-          </div>
-          <div class="cycle-event ev-pcs">
-            <div class="cycle-event-name">PCS</div>
-            <div class="cycle-event-sub">주말 (토·일) · 온라인 · 4대륙</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="cycle-week cw-w3">
-        <div class="cycle-week-header">Week 3</div>
-        <div class="cycle-events">
-          <div class="cycle-event ev-event">
-            <div class="cycle-event-name">Event Match</div>
-            <div class="cycle-event-sub">주말 · 스트리머·셀러브리티 콜라보</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="cycle-week cw-w4">
-        <div class="cycle-week-header">Week 4</div>
-        <div class="cycle-events">
-          <div class="cycle-event ev-pgs">
-            <div class="cycle-event-name">PGS 🏟️</div>
-            <div class="cycle-event-sub">금·토·일 · LAN 오프라인 · 16팀</div>
+        <div class="award-section">
+          <div class="award-section-header"><div class="award-section-title">Club Support — 팀 지원금</div><div class="award-section-sub">PGC 크라우드펀딩 풀 100% 배분</div></div>
+          <div class="award-list">
+            <div class="award-cat">PGC 성적 기반</div>
+            <div class="award-item"><div class="award-name">🥇 1위</div><div class="award-bar-wrap"><div class="award-bar" style="width:100%;background:linear-gradient(90deg,#fbbf24,#f59e0b)"></div></div><div class="award-pct" style="color:var(--gold2)">25%</div></div>
+            <div class="award-item"><div class="award-name">🥈 2위</div><div class="award-bar-wrap"><div class="award-bar" style="width:60%;background:linear-gradient(90deg,#94a3b8,#64748b)"></div></div><div class="award-pct">15%</div></div>
+            <div class="award-item"><div class="award-name">🥉 3위</div><div class="award-bar-wrap"><div class="award-bar" style="width:52%;background:linear-gradient(90deg,#cd7c2c,#a16207)"></div></div><div class="award-pct">13%</div></div>
+            <div class="award-item"><div class="award-name">4위</div><div class="award-bar-wrap"><div class="award-bar" style="width:44%"></div></div><div class="award-pct">11%</div></div>
+            <div class="award-item"><div class="award-name">5위</div><div class="award-bar-wrap"><div class="award-bar" style="width:36%"></div></div><div class="award-pct">9%</div></div>
+            <div class="award-item"><div class="award-name">6위</div><div class="award-bar-wrap"><div class="award-bar" style="width:28%"></div></div><div class="award-pct">7%</div></div>
+            <div class="award-item"><div class="award-name">7위</div><div class="award-bar-wrap"><div class="award-bar" style="width:20%"></div></div><div class="award-pct">5%</div></div>
+            <div class="award-item"><div class="award-name">8위</div><div class="award-bar-wrap"><div class="award-bar" style="width:20%"></div></div><div class="award-pct">5%</div></div>
+            <div class="award-cat">팬 참여</div>
+            <div class="award-item"><div class="award-name">Most Popular Club</div><div class="award-bar-wrap"><div class="award-bar" style="width:20%;background:linear-gradient(90deg,#ec4899,#db2777)"></div></div><div class="award-pct">5%</div></div>
+            <div class="award-item"><div class="award-name">Best Streaming Club</div><div class="award-bar-wrap"><div class="award-bar" style="width:20%;background:linear-gradient(90deg,#ec4899,#db2777)"></div></div><div class="award-pct">5%</div></div>
           </div>
         </div>
       </div>
     </div>
+  </section>
+</div><!-- /page-home -->
 
-    <div class="cycle-note fade-in">
-      🗺️ <strong>맵 사이클:</strong> 각 사이클마다 단일 맵이 지정됩니다. 해당 사이클의 Open·RS·PCS·PGS 전체가 같은 맵으로 진행됩니다. 어떤 팀이 이 맵에서 강한지, 사이클마다 새로운 서사가 만들어집니다.
-    </div>
-  </div>
-</section>
 
-<!-- EVENTS -->
-<section id="events">
-  <div class="container">
-    <div class="fade-in">
-      <div class="section-label">Special Events</div>
-      <h2 class="section-title">연간 빅 이벤트</h2>
-      <p class="section-desc">
-        정규 사이클 외에, 1년에 한 번씩 열리는 특별 대회들입니다.
-      </p>
-    </div>
+<!-- ══════════════════════════════════════════════════════
+     PAGE: REGIONS
+════════════════════════════════════════════════════════ -->
+<div id="page-regions" class="page">
+  <div class="page-top-pad"></div>
+  <section>
+    <div class="container">
+      <div class="section-label">Regional Series</div>
+      <h2 class="section-title">9개 지역 대회</h2>
+      <p class="section-desc">2027년 9개 지역으로 확대. 매 사이클 W1 주말(토·일)에 온라인으로 진행됩니다. 연 8회 운영.</p>
 
-    <div class="events-grid fade-in">
-      <div class="event-card ev-pnc">
-        <div class="event-card-top">
-          <div class="event-month">June · 6월</div>
-          <div class="event-name">PNC</div>
-          <div class="event-full">PUBG Nations Cup</div>
-        </div>
-        <div class="event-card-body">
-          <div class="event-tag">🏳️ 국가대항전</div>
-          <div class="event-desc">16개 국가 대표 팀이 맞붙는 국가대항전. 금요일엔 스트리머 이벤트 매치, 토~일엔 본선. 포인트 미부여.</div>
-          <div class="event-prize">상금 $500,000</div>
-        </div>
-      </div>
-
-      <div class="event-card ev-ewc">
-        <div class="event-card-top">
-          <div class="event-month">Jul–Aug · 7~8월</div>
-          <div class="event-name">EWC</div>
-          <div class="event-full">Esports World Cup</div>
-        </div>
-        <div class="event-card-body">
-          <div class="event-tag">🌐 글로벌 초청</div>
-          <div class="event-desc">24팀이 참가하는 EWC 무대. PUBG Points 부여 (1위 700pt). PGS와 PGC 사이 위치의 포인트 비중.</div>
-          <div class="event-prize">EWC 주관 별도 상금</div>
-        </div>
-      </div>
-
-      <div class="event-card ev-pgo">
-        <div class="event-card-top">
-          <div class="event-month">November · 11월</div>
-          <div class="event-name">PGO</div>
-          <div class="event-full">PUBG Global Open</div>
-        </div>
-        <div class="event-card-body">
-          <div class="event-tag">🎯 오픈 포맷</div>
-          <div class="event-desc">인게임 경쟁전과 연계된 오픈 대회. West/East 2개 권역, 듀오+스쿼드 2개 부문 운영. 포인트 미부여.</div>
-          <div class="event-prize">상금 $600,000</div>
-        </div>
-      </div>
-
-      <div class="event-card ev-pgc">
-        <div class="event-card-top">
-          <div class="event-month">December · 12월</div>
-          <div class="event-name">PGC</div>
-          <div class="event-full">PUBG Global Championship</div>
-        </div>
-        <div class="event-card-body">
-          <div class="event-tag">🏆 World Championship</div>
-          <div class="event-desc">32팀. 그룹스테이지(24팀) + 그랜드파이널(8팀). 이 대회 우승팀이 그 해의 유일한 World Champion.</div>
-          <div class="event-prize">상금 $1,500,000</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PRIZE -->
-<section id="prize">
-  <div class="container">
-    <div class="fade-in">
-      <div class="section-label">Prize Pool</div>
-      <h2 class="section-title">상금 구조</h2>
-    </div>
-
-    <div class="prize-total fade-in">
-      <div class="amt">$6,180,000</div>
-      <div class="amt-sub">2027 시즌 총 상금 (약 85억 원) — EWC 별도</div>
-    </div>
-
-    <div class="prize-bars fade-in">
-      <div class="prize-bar-row">
-        <div class="pb-label">PGC</div>
-        <div class="pb-track"><div class="pb-fill" style="width: 24.3%; background: linear-gradient(90deg, #ef4444, #dc2626);"></div></div>
-        <div class="pb-amt">$1,500,000</div>
-      </div>
-      <div class="prize-bar-row">
-        <div class="pb-label">글로벌 (PGS × 6)</div>
-        <div class="pb-track"><div class="pb-fill" style="width: 14.6%; background: linear-gradient(90deg, #f59e0b, #d97706);"></div></div>
-        <div class="pb-amt">$900,000</div>
-      </div>
-      <div class="prize-bar-row">
-        <div class="pb-label">PNC</div>
-        <div class="pb-track"><div class="pb-fill" style="width: 8.1%; background: linear-gradient(90deg, #8b5cf6, #7c3aed);"></div></div>
-        <div class="pb-amt">$500,000</div>
-      </div>
-      <div class="prize-bar-row">
-        <div class="pb-label">Regional Series</div>
-        <div class="pb-track"><div class="pb-fill" style="width: 23.0%; background: linear-gradient(90deg, #0ea5e9, #0284c7);"></div></div>
-        <div class="pb-amt">$1,424,000</div>
-      </div>
-      <div class="prize-bar-row">
-        <div class="pb-label">PCS (4권역)</div>
-        <div class="pb-track"><div class="pb-fill" style="width: 18.1%; background: linear-gradient(90deg, #7c3aed, #6d28d9);"></div></div>
-        <div class="pb-amt">$1,120,000</div>
-      </div>
-      <div class="prize-bar-row">
-        <div class="pb-label">PGO</div>
-        <div class="pb-track"><div class="pb-fill" style="width: 9.7%; background: linear-gradient(90deg, #10b981, #059669);"></div></div>
-        <div class="pb-amt">$600,000</div>
-      </div>
-      <div class="prize-bar-row">
-        <div class="pb-label">Open 예선</div>
-        <div class="pb-track"><div class="pb-fill" style="width: 2.2%; background: linear-gradient(90deg, #64748b, #475569);"></div></div>
-        <div class="pb-amt">$136,000</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- AWARDS -->
-<section id="awards">
-  <div class="container">
-    <div class="fade-in">
-      <div class="section-label">Annual Awards</div>
-      <h2 class="section-title">연간 시상</h2>
-      <p class="section-desc">
-        매 시즌 비시즌(1~2월)에 특별 시상식을 개최합니다.<br>
-        PNC·PGC 크라우드펀딩 풀에서 재원이 조달됩니다.
-      </p>
-    </div>
-
-    <div class="awards-grid fade-in">
-      <div class="award-section">
-        <div class="award-section-header">
-          <div class="award-section-title">Special Awards — 개인상</div>
-          <div class="award-section-sub">PNC 크라우드펀딩 풀 100% 배분</div>
-        </div>
-        <div class="award-list">
-          <div class="award-cat">시즌 최고 성과</div>
-          <div class="award-item">
-            <div class="award-name">Season MVP</div>
-            <div class="award-bar-wrap"><div class="award-bar" style="width: 100%;"></div></div>
-            <div class="award-pct" style="color: var(--gold2);">30%</div>
+      <div class="region-grid">
+        <!-- ASIA -->
+        <div class="region-card continent-ASIA">
+          <div class="region-card-top"><div class="region-continent">ASIA</div><div class="region-name">PCL</div><div class="region-full">PUBG Champion League</div></div>
+          <div class="region-card-body">
+            <div class="region-stat"><span class="region-stat-label">권역</span><span class="region-stat-val">ASIA</span></div>
+            <div class="region-stat"><span class="region-stat-label">1회 상금</span><span class="region-stat-val region-prize-highlight">$40,000</span></div>
+            <div class="region-stat"><span class="region-stat-label">연간 총액 (×8)</span><span class="region-stat-val">$320,000</span></div>
+            <div class="region-stat"><span class="region-stat-label">포인트 (1위)</span><span class="region-stat-val">50pt</span></div>
           </div>
-          <div class="award-item">
-            <div class="award-name">Kill Leader</div>
-            <div class="award-bar-wrap"><div class="award-bar" style="width: 60%;"></div></div>
-            <div class="award-pct">18%</div>
+        </div>
+        <div class="region-card continent-ASIA">
+          <div class="region-card-top"><div class="region-continent">ASIA</div><div class="region-name">PWS</div><div class="region-full">PUBG Weekly Series</div></div>
+          <div class="region-card-body">
+            <div class="region-stat"><span class="region-stat-label">권역</span><span class="region-stat-val">ASIA</span></div>
+            <div class="region-stat"><span class="region-stat-label">1회 상금</span><span class="region-stat-val region-prize-highlight">$20,000</span></div>
+            <div class="region-stat"><span class="region-stat-label">연간 총액 (×8)</span><span class="region-stat-val">$160,000</span></div>
+            <div class="region-stat"><span class="region-stat-label">포인트 (1위)</span><span class="region-stat-val">50pt</span></div>
           </div>
-          <div class="award-item">
-            <div class="award-name">Under 23</div>
-            <div class="award-bar-wrap"><div class="award-bar" style="width: 27%;"></div></div>
-            <div class="award-pct">8%</div>
+        </div>
+        <!-- APAC -->
+        <div class="region-card continent-APAC">
+          <div class="region-card-top"><div class="region-continent">APAC</div><div class="region-name">PTS</div><div class="region-full">PUBG Thailand Series</div></div>
+          <div class="region-card-body">
+            <div class="region-stat"><span class="region-stat-label">권역</span><span class="region-stat-val">APAC</span></div>
+            <div class="region-stat"><span class="region-stat-label">1회 상금</span><span class="region-stat-val region-prize-highlight">$12,000</span></div>
+            <div class="region-stat"><span class="region-stat-label">연간 총액 (×8)</span><span class="region-stat-val">$96,000</span></div>
+            <div class="region-stat"><span class="region-stat-label">포인트 (1위)</span><span class="region-stat-val">50pt</span></div>
           </div>
-          <div class="award-item">
-            <div class="award-name">Rookie of the Year</div>
-            <div class="award-bar-wrap"><div class="award-bar" style="width: 33%;"></div></div>
-            <div class="award-pct">10%</div>
+        </div>
+        <div class="region-card continent-APAC">
+          <div class="region-card-top"><div class="region-continent">APAC</div><div class="region-name">PVS</div><div class="region-full">PUBG Vietnam Series</div></div>
+          <div class="region-card-body">
+            <div class="region-stat"><span class="region-stat-label">권역</span><span class="region-stat-val">APAC</span></div>
+            <div class="region-stat"><span class="region-stat-label">1회 상금</span><span class="region-stat-val region-prize-highlight">$8,000</span></div>
+            <div class="region-stat"><span class="region-stat-label">연간 총액 (×8)</span><span class="region-stat-val">$64,000</span></div>
+            <div class="region-stat"><span class="region-stat-label">포인트 (1위)</span><span class="region-stat-val">50pt</span></div>
           </div>
-          <div class="award-cat">팬 선택</div>
-          <div class="award-item">
-            <div class="award-name">Fan Favorite</div>
-            <div class="award-bar-wrap"><div class="award-bar" style="width: 47%; background: linear-gradient(90deg, #ec4899, #db2777);"></div></div>
-            <div class="award-pct">14%</div>
+        </div>
+        <div class="region-card continent-APAC">
+          <div class="region-card-top"><div class="region-continent">APAC</div><div class="region-name">PMS</div><div class="region-full">PUBG Malaysia Series</div></div>
+          <div class="region-card-body">
+            <div class="region-stat"><span class="region-stat-label">권역</span><span class="region-stat-val">APAC</span></div>
+            <div class="region-stat"><span class="region-stat-label">1회 상금</span><span class="region-stat-val region-prize-highlight">$8,000</span></div>
+            <div class="region-stat"><span class="region-stat-label">연간 총액 (×8)</span><span class="region-stat-val">$64,000</span></div>
+            <div class="region-stat"><span class="region-stat-label">포인트 (1위)</span><span class="region-stat-val">50pt</span></div>
           </div>
-          <div class="award-item">
-            <div class="award-name">Popularity Award</div>
-            <div class="award-bar-wrap"><div class="award-bar" style="width: 30%; background: linear-gradient(90deg, #ec4899, #db2777);"></div></div>
-            <div class="award-pct">9%</div>
+        </div>
+        <!-- EMEA -->
+        <div class="region-card continent-EMEA">
+          <div class="region-card-top"><div class="region-continent">EMEA</div><div class="region-name">EU</div><div class="region-full">PUBG Europe League</div></div>
+          <div class="region-card-body">
+            <div class="region-stat"><span class="region-stat-label">권역</span><span class="region-stat-val">EMEA</span></div>
+            <div class="region-stat"><span class="region-stat-label">1회 상금</span><span class="region-stat-val region-prize-highlight">$30,000</span></div>
+            <div class="region-stat"><span class="region-stat-label">연간 총액 (×8)</span><span class="region-stat-val">$240,000</span></div>
+            <div class="region-stat"><span class="region-stat-label">포인트 (1위)</span><span class="region-stat-val">50pt</span></div>
           </div>
-          <div class="award-cat">PUBG First Team (포지션상)</div>
-          <div class="award-item">
-            <div class="award-name">Order</div>
-            <div class="award-bar-wrap"><div class="award-bar" style="width: 10%; background: linear-gradient(90deg, #f59e0b, #d97706);"></div></div>
-            <div class="award-pct">3%</div>
+        </div>
+        <div class="region-card continent-EMEA">
+          <div class="region-card-top"><div class="region-continent">EMEA</div><div class="region-name">MENA</div><div class="region-full">Middle East & North Africa</div></div>
+          <div class="region-card-body">
+            <div class="region-stat"><span class="region-stat-label">권역</span><span class="region-stat-val">EMEA</span></div>
+            <div class="region-stat"><span class="region-stat-label">1회 상금</span><span class="region-stat-val region-prize-highlight">$20,000</span></div>
+            <div class="region-stat"><span class="region-stat-label">연간 총액 (×8)</span><span class="region-stat-val">$160,000</span></div>
+            <div class="region-stat"><span class="region-stat-label">포인트 (1위)</span><span class="region-stat-val">50pt</span></div>
           </div>
-          <div class="award-item">
-            <div class="award-name">Supporter</div>
-            <div class="award-bar-wrap"><div class="award-bar" style="width: 10%; background: linear-gradient(90deg, #f59e0b, #d97706);"></div></div>
-            <div class="award-pct">3%</div>
+        </div>
+        <!-- AMs -->
+        <div class="region-card continent-AMs">
+          <div class="region-card-top"><div class="region-continent">AMs</div><div class="region-name">AM</div><div class="region-full">Americas (Non-Brazil)</div></div>
+          <div class="region-card-body">
+            <div class="region-stat"><span class="region-stat-label">권역</span><span class="region-stat-val">AMs</span></div>
+            <div class="region-stat"><span class="region-stat-label">1회 상금</span><span class="region-stat-val region-prize-highlight">$30,000</span></div>
+            <div class="region-stat"><span class="region-stat-label">연간 총액 (×8)</span><span class="region-stat-val">$240,000</span></div>
+            <div class="region-stat"><span class="region-stat-label">포인트 (1위)</span><span class="region-stat-val">50pt</span></div>
           </div>
-          <div class="award-item">
-            <div class="award-name">AR</div>
-            <div class="award-bar-wrap"><div class="award-bar" style="width: 10%; background: linear-gradient(90deg, #f59e0b, #d97706);"></div></div>
-            <div class="award-pct">3%</div>
-          </div>
-          <div class="award-item">
-            <div class="award-name">DMR</div>
-            <div class="award-bar-wrap"><div class="award-bar" style="width: 7%; background: linear-gradient(90deg, #f59e0b, #d97706);"></div></div>
-            <div class="award-pct">2%</div>
+        </div>
+        <div class="region-card continent-AMs">
+          <div class="region-card-top"><div class="region-continent">AMs</div><div class="region-name">BR</div><div class="region-full">PUBG Brazil Series</div></div>
+          <div class="region-card-body">
+            <div class="region-stat"><span class="region-stat-label">권역</span><span class="region-stat-val">AMs</span></div>
+            <div class="region-stat"><span class="region-stat-label">1회 상금</span><span class="region-stat-val region-prize-highlight">$10,000</span></div>
+            <div class="region-stat"><span class="region-stat-label">연간 총액 (×8)</span><span class="region-stat-val">$80,000</span></div>
+            <div class="region-stat"><span class="region-stat-label">포인트 (1위)</span><span class="region-stat-val">50pt</span></div>
           </div>
         </div>
       </div>
 
-      <div class="award-section">
-        <div class="award-section-header">
-          <div class="award-section-title">Club Support — 팀 지원금</div>
-          <div class="award-section-sub">PGC 크라우드펀딩 풀 100% 배분</div>
-        </div>
-        <div class="award-list">
-          <div class="award-cat">PGC 성적 기반</div>
-          <div class="award-item">
-            <div class="award-name">🥇 1위</div>
-            <div class="award-bar-wrap"><div class="award-bar" style="width: 100%; background: linear-gradient(90deg, #fbbf24, #f59e0b);"></div></div>
-            <div class="award-pct" style="color: var(--gold2);">25%</div>
-          </div>
-          <div class="award-item">
-            <div class="award-name">🥈 2위</div>
-            <div class="award-bar-wrap"><div class="award-bar" style="width: 60%; background: linear-gradient(90deg, #94a3b8, #64748b);"></div></div>
-            <div class="award-pct">15%</div>
-          </div>
-          <div class="award-item">
-            <div class="award-name">🥉 3위</div>
-            <div class="award-bar-wrap"><div class="award-bar" style="width: 52%; background: linear-gradient(90deg, #cd7c2c, #a16207);"></div></div>
-            <div class="award-pct">13%</div>
-          </div>
-          <div class="award-item">
-            <div class="award-name">4위</div>
-            <div class="award-bar-wrap"><div class="award-bar" style="width: 44%;"></div></div>
-            <div class="award-pct">11%</div>
-          </div>
-          <div class="award-item">
-            <div class="award-name">5위</div>
-            <div class="award-bar-wrap"><div class="award-bar" style="width: 36%;"></div></div>
-            <div class="award-pct">9%</div>
-          </div>
-          <div class="award-item">
-            <div class="award-name">6위</div>
-            <div class="award-bar-wrap"><div class="award-bar" style="width: 28%;"></div></div>
-            <div class="award-pct">7%</div>
-          </div>
-          <div class="award-item">
-            <div class="award-name">7위</div>
-            <div class="award-bar-wrap"><div class="award-bar" style="width: 20%;"></div></div>
-            <div class="award-pct">5%</div>
-          </div>
-          <div class="award-item">
-            <div class="award-name">8위</div>
-            <div class="award-bar-wrap"><div class="award-bar" style="width: 20%;"></div></div>
-            <div class="award-pct">5%</div>
-          </div>
-          <div class="award-cat">팬 참여</div>
-          <div class="award-item">
-            <div class="award-name">Most Popular Club</div>
-            <div class="award-bar-wrap"><div class="award-bar" style="width: 20%; background: linear-gradient(90deg, #ec4899, #db2777);"></div></div>
-            <div class="award-pct">5%</div>
-          </div>
-          <div class="award-item">
-            <div class="award-name">Best Streaming Club</div>
-            <div class="award-bar-wrap"><div class="award-bar" style="width: 20%; background: linear-gradient(90deg, #ec4899, #db2777);"></div></div>
-            <div class="award-pct">5%</div>
-          </div>
+      <div style="margin-top:4rem">
+        <div class="section-label">PCS</div>
+        <h3 class="section-title" style="font-size:1.8rem;margin-bottom:1rem">PCS — 4개 대륙 온라인 리그</h3>
+        <p class="section-desc">각 권역 포인트 상위 16팀. 연 8회 운영. 매 사이클 W2 주말 진행.</p>
+        <div class="pcs-grid">
+          <div class="pcs-card"><div class="pcs-card-region">ASIA</div><div class="pcs-card-name">PCS ASIA</div><div class="pcs-card-stat"><div class="val">16팀</div><div class="lbl">PWS + PCL 포인트 합산</div></div><div class="pcs-card-prize">$40,000 × 8회 = $320,000</div></div>
+          <div class="pcs-card"><div class="pcs-card-region">APAC</div><div class="pcs-card-name">PCS APAC</div><div class="pcs-card-stat"><div class="val">16팀</div><div class="lbl">PTS + PVS + PMS 포인트 합산</div></div><div class="pcs-card-prize">$20,000 × 8회 = $160,000</div></div>
+          <div class="pcs-card"><div class="pcs-card-region">EMEA</div><div class="pcs-card-name">PCS EMEA</div><div class="pcs-card-stat"><div class="val">16팀</div><div class="lbl">MENA + EU 포인트 합산</div></div><div class="pcs-card-prize">$40,000 × 8회 = $320,000</div></div>
+          <div class="pcs-card"><div class="pcs-card-region">AMs</div><div class="pcs-card-name">PCS AMs</div><div class="pcs-card-stat"><div class="val">16팀</div><div class="lbl">AM + BR 포인트 합산</div></div><div class="pcs-card-prize">$40,000 × 8회 = $320,000</div></div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+</div><!-- /page-regions -->
+
+
+<!-- ══════════════════════════════════════════════════════
+     PAGE: FULL POINTS
+════════════════════════════════════════════════════════ -->
+<div id="page-points" class="page">
+  <div class="page-top-pad"></div>
+  <section>
+    <div class="container">
+      <div class="section-label">Full Points Table</div>
+      <h2 class="section-title">전체 포인트 테이블</h2>
+      <p class="section-desc">모든 순위에 개별 점수가 배정됩니다. 대회를 선택해서 확인하세요.</p>
+
+      <div class="comp-tabs">
+        <button class="comp-tab active" data-comp="open"  onclick="showComp('open')">Open</button>
+        <button class="comp-tab"        data-comp="rs"    onclick="showComp('rs')">Regional Series</button>
+        <button class="comp-tab"        data-comp="pcs"   onclick="showComp('pcs')">PCS</button>
+        <button class="comp-tab"        data-comp="pgs"   onclick="showComp('pgs')">PGS</button>
+        <button class="comp-tab"        data-comp="ewc"   onclick="showComp('ewc')">EWC</button>
+        <button class="comp-tab"        data-comp="pgc"   onclick="showComp('pgc')">PGC</button>
+      </div>
+
+      <!-- OPEN -->
+      <div class="points-panel active" id="panel-open">
+        <div class="full-pts-wrap">
+          <div class="full-pts-header"><span class="full-pts-name" style="color:#94a3b8">Open 예선</span><span class="full-pts-sub">8팀 · 주당 최고 결과 1회만 적용</span></div>
+          <div class="pts-grid-full" id="rows-open"></div>
+        </div>
+      </div>
+      <!-- RS -->
+      <div class="points-panel" id="panel-rs">
+        <div class="full-pts-wrap">
+          <div class="full-pts-header"><span class="full-pts-name" style="color:var(--rs)">Regional Series</span><span class="full-pts-sub">16팀 · 9개 지역 운영</span></div>
+          <div class="pts-grid-full" id="rows-rs"></div>
+        </div>
+      </div>
+      <!-- PCS -->
+      <div class="points-panel" id="panel-pcs">
+        <div class="full-pts-wrap">
+          <div class="full-pts-header"><span class="full-pts-name" style="color:#a78bfa">PCS</span><span class="full-pts-sub">16팀 · 4개 권역 각자 운영</span></div>
+          <div class="pts-grid-full" id="rows-pcs"></div>
+        </div>
+      </div>
+      <!-- PGS -->
+      <div class="points-panel" id="panel-pgs">
+        <div class="full-pts-wrap">
+          <div class="full-pts-header"><span class="full-pts-name" style="color:var(--pgs)">PGS</span><span class="full-pts-sub">16팀 · 연 6회 글로벌 LAN</span></div>
+          <div class="pts-grid-full" id="rows-pgs"></div>
+        </div>
+      </div>
+      <!-- EWC -->
+      <div class="points-panel" id="panel-ewc">
+        <div class="full-pts-wrap">
+          <div class="full-pts-header"><span class="full-pts-name" style="color:#10b981">EWC</span><span class="full-pts-sub">24팀 · Esports World Cup</span></div>
+          <div class="pts-grid-full" id="rows-ewc"></div>
+        </div>
+      </div>
+      <!-- PGC -->
+      <div class="points-panel" id="panel-pgc">
+        <div class="full-pts-wrap">
+          <div class="full-pts-header"><span class="full-pts-name" style="color:#fca5a5">PGC</span><span class="full-pts-sub">32팀 · 월드 챔피언십</span></div>
+          <div class="pts-grid-full" id="rows-pgc"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div><!-- /page-points -->
+
+
+<!-- ══════════════════════════════════════════════════════
+     PAGE: FULL PRIZES
+════════════════════════════════════════════════════════ -->
+<div id="page-prizes" class="page">
+  <div class="page-top-pad"></div>
+  <section>
+    <div class="container">
+      <div class="section-label">Full Prize Breakdown</div>
+      <h2 class="section-title">상금 전체 내역</h2>
+
+      <div class="prize-big-num">
+        <div class="big">$6,180,000</div>
+        <div class="sub">2027 시즌 총 상금 (약 85억 원) · EWC 별도</div>
+      </div>
+
+      <div class="prize-section-title">
+        글로벌 이벤트
+        <span class="prize-section-badge" style="background:rgba(239,68,68,.2);color:#fca5a5">총 $2,900,000</span>
+      </div>
+      <table class="prize-full-table">
+        <thead><tr><th>대회</th><th>횟수</th><th>1회 상금</th><th>연간 총액</th><th>비고</th></tr></thead>
+        <tbody>
+          <tr><td>PGC</td><td>×1</td><td class="amt">$1,500,000</td><td class="amt">$1,500,000</td><td>월드 챔피언십</td></tr>
+          <tr><td>PNC</td><td>×1</td><td class="amt">$500,000</td><td class="amt">$500,000</td><td>국가대항전</td></tr>
+          <tr><td>PGS</td><td>×6</td><td class="amt">$150,000</td><td class="amt">$900,000</td><td>글로벌 LAN</td></tr>
+          <tr class="total-row"><td colspan="3">글로벌 합계</td><td>$2,900,000</td><td></td></tr>
+        </tbody>
+      </table>
+
+      <div class="prize-section-title">
+        Regional Series (9개 지역 × 8회)
+        <span class="prize-section-badge" style="background:rgba(14,165,233,.2);color:var(--rs)">총 $1,424,000</span>
+      </div>
+      <table class="prize-full-table">
+        <thead><tr><th>지역</th><th>권역</th><th>1회 상금</th><th>연간 (×8)</th></tr></thead>
+        <tbody>
+          <tr><td>PCL</td><td>ASIA</td><td class="amt">$40,000</td><td class="amt">$320,000</td></tr>
+          <tr><td>PWS</td><td>ASIA</td><td class="amt">$20,000</td><td class="amt">$160,000</td></tr>
+          <tr><td>PTS</td><td>APAC</td><td class="amt">$12,000</td><td class="amt">$96,000</td></tr>
+          <tr><td>PVS</td><td>APAC</td><td class="amt">$8,000</td><td class="amt">$64,000</td></tr>
+          <tr><td>PMS</td><td>APAC</td><td class="amt">$8,000</td><td class="amt">$64,000</td></tr>
+          <tr><td>EU</td><td>EMEA</td><td class="amt">$30,000</td><td class="amt">$240,000</td></tr>
+          <tr><td>MENA</td><td>EMEA</td><td class="amt">$20,000</td><td class="amt">$160,000</td></tr>
+          <tr><td>AM</td><td>AMs</td><td class="amt">$30,000</td><td class="amt">$240,000</td></tr>
+          <tr><td>BR</td><td>AMs</td><td class="amt">$10,000</td><td class="amt">$80,000</td></tr>
+          <tr class="total-row"><td colspan="3">RS 합계</td><td>$1,424,000</td></tr>
+        </tbody>
+      </table>
+
+      <div class="prize-section-title">
+        PCS (4개 권역 × 8회)
+        <span class="prize-section-badge" style="background:rgba(139,92,246,.2);color:#a78bfa">총 $1,120,000</span>
+      </div>
+      <table class="prize-full-table">
+        <thead><tr><th>권역</th><th>1회 상금</th><th>연간 (×8)</th></tr></thead>
+        <tbody>
+          <tr><td>ASIA</td><td class="amt">$40,000</td><td class="amt">$320,000</td></tr>
+          <tr><td>APAC</td><td class="amt">$20,000</td><td class="amt">$160,000</td></tr>
+          <tr><td>EMEA</td><td class="amt">$40,000</td><td class="amt">$320,000</td></tr>
+          <tr><td>AMs</td><td class="amt">$40,000</td><td class="amt">$320,000</td></tr>
+          <tr class="total-row"><td colspan="2">PCS 합계</td><td>$1,120,000</td></tr>
+        </tbody>
+      </table>
+
+      <div class="prize-section-title">
+        PGO (West/East · 듀오+스쿼드)
+        <span class="prize-section-badge" style="background:rgba(16,185,129,.15);color:#34d399">총 $600,000</span>
+      </div>
+      <table class="prize-full-table">
+        <thead><tr><th>부문</th><th>권역</th><th>상금</th></tr></thead>
+        <tbody>
+          <tr><td>듀오</td><td>West</td><td class="amt">$100,000</td></tr>
+          <tr><td>듀오</td><td>East</td><td class="amt">$100,000</td></tr>
+          <tr><td>스쿼드</td><td>West</td><td class="amt">$200,000</td></tr>
+          <tr><td>스쿼드</td><td>East</td><td class="amt">$200,000</td></tr>
+          <tr class="total-row"><td colspan="2">PGO 합계</td><td>$600,000</td></tr>
+        </tbody>
+      </table>
+
+      <div class="prize-section-title">
+        Open 예선 (9지역 × 16주)
+        <span class="prize-section-badge" style="background:rgba(71,85,105,.3);color:#94a3b8">총 $136,000</span>
+      </div>
+      <table class="prize-full-table">
+        <thead><tr><th>지역</th><th>주간 1위 상금</th><th>연간 (×16주)</th></tr></thead>
+        <tbody>
+          <tr><td>PCL</td><td class="amt">$2,000</td><td class="amt">$32,000</td></tr>
+          <tr><td>PWS</td><td class="amt">$1,000</td><td class="amt">$16,000</td></tr>
+          <tr><td>PTS</td><td class="amt">$500</td><td class="amt">$8,000</td></tr>
+          <tr><td>PVS</td><td class="amt">$500</td><td class="amt">$8,000</td></tr>
+          <tr><td>PMS</td><td class="amt">$500</td><td class="amt">$8,000</td></tr>
+          <tr><td>MENA</td><td class="amt">$1,000</td><td class="amt">$16,000</td></tr>
+          <tr><td>EU</td><td class="amt">$1,000</td><td class="amt">$16,000</td></tr>
+          <tr><td>AM</td><td class="amt">$1,000</td><td class="amt">$16,000</td></tr>
+          <tr><td>BR</td><td class="amt">$1,000</td><td class="amt">$16,000</td></tr>
+          <tr class="total-row"><td colspan="2">Open 합계</td><td>$136,000</td></tr>
+        </tbody>
+      </table>
+
+      <div style="background:var(--bg3);border:1px solid var(--line);border-radius:.75rem;padding:1rem 1.5rem;font-size:.85rem;color:var(--muted);line-height:1.8;margin-top:1rem">
+        ※ EWC 상금은 EWC 주관측 별도 집계. 위 합계에 미포함.<br>
+        ※ 연간 배분금(Revenue Share) 미운영.<br>
+        ※ GPT 보장금 종료. 팀 경비 지원 방식은 별도 협의.
+      </div>
+    </div>
+  </section>
+</div><!-- /page-prizes -->
 
 <!-- FOOTER -->
 <footer>
-  <p style="margin-bottom: 0.5rem; font-weight: 700; color: var(--text);">2027 PUBG Esports Global Circuit</p>
+  <p style="margin-bottom:.5rem;font-weight:700;color:var(--text)">2027 PUBG Esports Global Circuit</p>
   <p>KRAFTON Esports Department · Draft v1.3 · May 2026 · CONFIDENTIAL</p>
 </footer>
 
 <script>
-  // Fade-in on scroll
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
+// ── Page switching ──────────────────────────────────────
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('[data-page="' + id + '"]').classList.add('active');
+  document.getElementById('home-links').style.display = id === 'home' ? 'flex' : 'none';
+  window.scrollTo(0, 0);
+}
+
+// ── Comp tab switching ──────────────────────────────────
+function showComp(id) {
+  document.querySelectorAll('.points-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  document.querySelectorAll('.comp-tab').forEach(b => b.classList.remove('active'));
+  document.querySelector('.comp-tab[data-comp="' + id + '"]').classList.add('active');
+}
+
+// ── Points data ─────────────────────────────────────────
+const POINTS = {
+  open: {
+    color: '#94a3b8',
+    max: 10,
+    data: [10,6,5,4,3,2,1,1]
+  },
+  rs: {
+    color: '#0ea5e9',
+    max: 50,
+    data: [50,37,27,20,15,11,8,6,5,4,3,2,1,1,1,1]
+  },
+  pcs: {
+    color: '#a78bfa',
+    max: 150,
+    data: [150,120,95,76,61,48,38,31,25,20,16,13,10,8,6,5]
+  },
+  pgs: {
+    color: '#f59e0b',
+    max: 500,
+    data: [500,410,335,275,225,185,151,124,102,83,68,56,46,38,31,25]
+  },
+  ewc: {
+    color: '#10b981',
+    max: 700,
+    data: [700,610,531,463,403,351,306,267,233,203,177,154,134,117,102,89,77,67,59,51,44,39,34,30]
+  },
+  pgc: {
+    color: '#fca5a5',
+    max: 1000,
+    data: [1000,900,810,730,660,595,535,485,435,390,350,315,285,255,230,210,190,170,155,140,125,113,102,92,83,74,67,60,54,49,44,40]
+  }
+};
+
+function buildRows() {
+  Object.keys(POINTS).forEach(comp => {
+    const { color, max, data } = POINTS[comp];
+    const container = document.getElementById('rows-' + comp);
+    if (!container) return;
+    data.forEach((pt, i) => {
+      const pct = Math.round((pt / max) * 100);
+      const isTop3 = i < 3;
+      const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '';
+      container.innerHTML += `
+        <div class="pts-row ${isTop3 ? 'top3' : ''}">
+          <div class="pts-rank">${medal} ${i+1}위</div>
+          <div class="pts-bar-wrap">
+            <div class="pts-bar-inner" style="width:${pct}%;background:${color};opacity:${isTop3?1:0.6}"></div>
+          </div>
+          <div class="pts-val" style="color:${color}">${pt}pt</div>
+        </div>`;
     });
-  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  });
+}
+buildRows();
 
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+// ── Fade-in ─────────────────────────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 </script>
-
 </body>
 </html>
