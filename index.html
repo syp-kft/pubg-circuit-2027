@@ -163,6 +163,49 @@
     .pt-cell[data-tier="pgc"] .pt-pts{color:#fca5a5}
     .pt-cell .pt-label { font-size:.68rem; color:var(--muted); margin-top:.3rem; }
     .pt-note { padding:1rem 1.5rem; font-size:.82rem; color:var(--muted); border-top:1px solid var(--line); background:var(--bg2); line-height:1.7; }
+
+    /* ── DISTRIBUTION CARDS ── */
+    .dist-section-title { font-size:.95rem; font-weight:700; margin-bottom:1.25rem; color:var(--text); letter-spacing:.02em; }
+    .dist-section-title em { font-style:normal; color:var(--muted); font-weight:500; margin-left:.5rem; font-size:.85em; }
+    .dist-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1rem; margin-bottom:1rem; }
+    .dist-card {
+      background:var(--bg3); border:1px solid var(--line); border-radius:1rem;
+      padding:1.25rem 1.25rem 1rem 1.5rem;
+      position:relative; overflow:hidden;
+    }
+    .dist-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:4px; }
+    .dist-card[data-tier="open"]::before{background:var(--open)}
+    .dist-card[data-tier="rs"]::before{background:var(--rs)}
+    .dist-card[data-tier="pcs"]::before{background:var(--pcs)}
+    .dist-card[data-tier="pgs"]::before{background:var(--pgs)}
+    .dist-card[data-tier="ewc"]::before{background:#10b981}
+    .dist-card[data-tier="pgc"]::before{background:var(--pgc)}
+    .dist-header { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:.9rem; gap:.5rem; }
+    .dist-name { font-size:1.1rem; font-weight:800; }
+    .dist-card[data-tier="open"] .dist-name{color:#94a3b8}
+    .dist-card[data-tier="rs"] .dist-name{color:var(--rs)}
+    .dist-card[data-tier="pcs"] .dist-name{color:#a78bfa}
+    .dist-card[data-tier="pgs"] .dist-name{color:var(--pgs)}
+    .dist-card[data-tier="ewc"] .dist-name{color:#34d399}
+    .dist-card[data-tier="pgc"] .dist-name{color:#fca5a5}
+    .dist-meta { font-size:.72rem; color:var(--muted); white-space:nowrap; }
+    .dist-chart {
+      display:flex; align-items:flex-end; gap:2px;
+      height:72px; padding-bottom:2px;
+      border-bottom:1px solid var(--line); margin-bottom:.85rem;
+    }
+    .dist-bar { flex:1; min-width:3px; border-radius:2px 2px 0 0; }
+    .dist-foot { display:grid; grid-template-columns:1fr 1fr 1fr; gap:.5rem; }
+    .dist-foot-lbl { font-size:.68rem; color:var(--muted); display:block; margin-bottom:.2rem; letter-spacing:.05em; }
+    .dist-foot strong { font-size:1rem; font-weight:800; }
+    .dist-foot strong.dist-gap { font-size:1.15rem; }
+    .pt-note-standalone {
+      margin-top:.5rem; padding:1rem 1.25rem;
+      background:var(--bg3); border:1px solid var(--line);
+      border-radius:.75rem; font-size:.82rem;
+      color:var(--muted); line-height:1.7;
+    }
+
     .ladder-logic { display:grid; grid-template-columns:1fr 60px 1fr; align-items:center; margin-top:2rem; background:var(--bg3); border:1px solid var(--line); border-radius:1rem; overflow:hidden; }
     .ll-side { padding:1.5rem 2rem; text-align:center; }
     .ll-side.ll-left{border-right:1px solid var(--line)}
@@ -487,17 +530,10 @@
         <div class="point-step"><div class="step-num">2</div><h3>포인트가 높으면 → 더 큰 대회 참가</h3><p>다음 대회 참가 자격은 현재 포인트 랭킹으로 결정됩니다. 상위권이면 PGS, 하위권이면 RS. 별도 심사 없음.</p></div>
         <div class="point-step"><div class="step-num">3</div><h3>52주 뒤엔 자동 소멸</h3><p>포인트는 얻고 나서 1년(52주) 후 사라집니다. 꾸준히 잘해야 순위를 유지할 수 있습니다. 연간 리셋은 없습니다.</p></div>
       </div>
-      <div class="points-table-wrap fade-in">
-        <div class="points-table-title">대회별 1위 포인트 비교</div>
-        <div class="pt-grid">
-          <div class="pt-cell" data-tier="open"><div class="pt-comp">Open</div><div class="pt-pts">10</div><div class="pt-label">pt / 주 1회</div></div>
-          <div class="pt-cell" data-tier="rs"><div class="pt-comp">RS</div><div class="pt-pts">50</div><div class="pt-label">pt</div></div>
-          <div class="pt-cell" data-tier="pcs"><div class="pt-comp">PCS</div><div class="pt-pts">150</div><div class="pt-label">pt</div></div>
-          <div class="pt-cell" data-tier="pgs"><div class="pt-comp">PGS</div><div class="pt-pts">500</div><div class="pt-label">pt</div></div>
-          <div class="pt-cell" data-tier="ewc"><div class="pt-comp">EWC</div><div class="pt-pts">700</div><div class="pt-label">pt</div></div>
-          <div class="pt-cell" data-tier="pgc"><div class="pt-comp">PGC</div><div class="pt-pts">1000</div><div class="pt-label">pt</div></div>
-        </div>
-        <div class="pt-note">✦ 전체 포인트 테이블 (모든 순위) → 상단 <strong>전체 포인트</strong> 탭에서 확인하세요.<br>✦ PNC·PGO는 포인트 미부여 (국가대항전·특별 오픈 성격).</div>
+      <div class="fade-in">
+        <h3 class="dist-section-title" id="dist-title">대회별 포인트 분포 <em>— 차등이 얼마나 가파른가</em></h3>
+        <div class="dist-grid" id="dist-grid"></div>
+        <p class="pt-note-standalone" id="dist-note">✦ 전체 포인트 테이블(모든 순위)은 상단 <strong>전체 포인트</strong> 탭에서 확인하세요.<br>✦ PNC·PGO는 포인트 미부여 (국가대항전·특별 오픈 성격).</p>
       </div>
       <div class="ladder-logic fade-in">
         <div class="ll-side ll-left"><div class="ll-comp">Regional Series</div><div class="ll-pts" style="color:var(--rs)">50pt</div><div class="ll-result">RS 우승팀</div></div>
@@ -951,6 +987,57 @@ const POINTS = {
   }
 };
 
+const COMP_META = {
+  open: { name: 'Open',            meta: { ko: '9개 지역 · 매주',     en: '9 regions · weekly' } },
+  rs:   { name: 'Regional Series', meta: { ko: '9개 지역 · 연 8회',   en: '9 regions · 8×/year' } },
+  pcs:  { name: 'PCS',             meta: { ko: '4개 권역 · 연 8회',   en: '4 continents · 8×/year' } },
+  pgs:  { name: 'PGS',             meta: { ko: '글로벌 · 연 6회',     en: 'Global · 6×/year' } },
+  ewc:  { name: 'EWC',             meta: { ko: '글로벌 · 연 1회',     en: 'Global · 1×/year' } },
+  pgc:  { name: 'PGC',             meta: { ko: '글로벌 · 연 1회',     en: 'Global · 1×/year' } }
+};
+
+const DIST_LABELS = {
+  ko: { rank1: '1위', last: '최하위', gap: '차등', title: '대회별 포인트 분포 <em>— 차등이 얼마나 가파른가</em>', note: '✦ 전체 포인트 테이블(모든 순위)은 상단 <strong>전체 포인트</strong> 탭에서 확인하세요.<br>✦ PNC·PGO는 포인트 미부여 (국가대항전·특별 오픈 성격).' },
+  en: { rank1: '1st', last: 'Last', gap: 'Gap', title: 'Points Distribution by Competition <em>— How sharp is the falloff</em>', note: '✦ See the <strong>Full Points</strong> tab above for the complete table (all ranks).<br>✦ PNC·PGO award no points (nations-cup / special-open format).' }
+};
+
+function buildDist() {
+  const grid = document.getElementById('dist-grid');
+  if (!grid) return;
+  const order = ['open','rs','pcs','pgs','ewc','pgc'];
+  const L = DIST_LABELS[currentLang] || DIST_LABELS.ko;
+  grid.innerHTML = '';
+  order.forEach(comp => {
+    const m = COMP_META[comp];
+    const { color, max, data } = POINTS[comp];
+    const last = Math.min(...data);
+    const gap = Math.round(max / last);
+    let bars = '';
+    data.forEach((pt, i) => {
+      const h = Math.max(3, Math.round((pt / max) * 100));
+      const op = Math.max(0.32, 1 - (i / data.length) * 0.75);
+      bars += `<div class="dist-bar" style="height:${h}%;background:${color};opacity:${op}"></div>`;
+    });
+    grid.innerHTML += `
+      <div class="dist-card" data-tier="${comp}">
+        <div class="dist-header">
+          <div class="dist-name">${m.name}</div>
+          <div class="dist-meta">${m.meta[currentLang] || m.meta.ko}</div>
+        </div>
+        <div class="dist-chart">${bars}</div>
+        <div class="dist-foot">
+          <div><span class="dist-foot-lbl">${L.rank1}</span><strong>${max}pt</strong></div>
+          <div><span class="dist-foot-lbl">${L.last}</span><strong>${last}pt</strong></div>
+          <div><span class="dist-foot-lbl">${L.gap}</span><strong class="dist-gap" style="color:${color}">${gap}×</strong></div>
+        </div>
+      </div>`;
+  });
+  const titleEl = document.getElementById('dist-title');
+  const noteEl = document.getElementById('dist-note');
+  if (titleEl) titleEl.innerHTML = L.title;
+  if (noteEl)  noteEl.innerHTML  = L.note;
+}
+
 function buildRows() {
   Object.keys(POINTS).forEach(comp => {
     const { color, max, data } = POINTS[comp];
@@ -1209,9 +1296,11 @@ function setLang(lang) {
   const btn = document.getElementById('lang-btn');
   if (btn) btn.textContent = lang === 'en' ? '한국어' : 'EN';
   buildRows();
+  buildDist();
 }
 
 buildRows();
+buildDist();
 
 // ── Fade-in ─────────────────────────────────────────────
 const observer = new IntersectionObserver(entries => {
