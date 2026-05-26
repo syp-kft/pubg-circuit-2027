@@ -1860,6 +1860,14 @@ function switchVersion(ver) {
   buildRows();
   buildPtsCompare(ver);
   buildSchedule();
+
+  // Re-apply English translation if needed (setVer may overwrite with Korean)
+  if (currentLang === 'en') {
+    document.querySelectorAll('[data-orig]').forEach(el => { delete el.dataset.orig; });
+    const _lang = currentLang;
+    currentLang = 'ko';
+    setLang(_lang);
+  }
 }
 
 // ── Page switching ──────────────────────────────────────
@@ -2371,11 +2379,35 @@ const I18N = {
   '포인트 스케일 비교': 'Points scale comparison',
   '하나의 사다리': 'One ladder',
   '합계': 'Total',
-  '확정 시점의 52주 누적 PUBG Points 글로벌 랭킹 (권역 필터 적용) 기준 상위팀 자동 선발.': 'Top teams automatically selected by 52-week cumulative PUBG Points global ranking (region filter applied) at lock-in date.'
+  '확정 시점의 52주 누적 PUBG Points 글로벌 랭킹 (권역 필터 적용) 기준 상위팀 자동 선발.': 'Top teams automatically selected by 52-week cumulative PUBG Points global ranking (region filter applied) at lock-in date.',
+  // === V3-SPECIFIC DYNAMIC TEXTS ===
+  '6주가 한 사이클,<br>매달 반복됩니다': 'Six-week cycle,<br>repeating monthly',
+  '5개 권역 · 10개 지역': '5 Continents · 10 Regions',
+  '4개 권역 · 9개 지역': '4 Continents · 9 Regions',
+  '12개월 풀 캘린더. 3월 10th Anniversary로 시즌 개막 · 6월 PNC · 7월 EWC · 8월 GOTF · 12월 PGC. 6주 1사이클 × 4회.': '12-month full calendar. Season opens with 10th Anniversary (Mar) · PNC (Jun) · EWC (Jul) · GOTF (Aug) · PGC (Dec). 6-week cycle × 4.',
+  '12개월 풀 캘린더. 3월 10th Anniversary로 시즌 개막 · 6월 PNC · 7월 EWC · 8월 GOTF · 12월 PGC로 마무리.': '12-month full calendar. Season opens with 10th Anniversary (Mar) · PNC (Jun) · EWC (Jul) · GOTF (Aug) · closes with PGC (Dec).',
+  '연 4회 · 현장 오프라인 (무관중) · 16팀 · 전 세계 최강들이 같은 물리 공간에서 맞붙는 유일한 무대': '4×/year · On-site offline (no audience) · 16 teams · The only stage where the world's best compete in the same physical space',
+  '연 6회 · 현장 오프라인 · 16팀 · 전 세계 최강들이 같은 물리 공간에서 맞붙는 유일한 무대': '6×/year · On-site offline · 16 teams · The only stage where the world's best compete in the same physical space',
+  '$200,000 × 4회': '$200,000 × 4 events',
+  '$150,000 × 6회': '$150,000 × 6 events',
+  '16팀 · 연 4회 글로벌 LAN': '16 teams · Global LAN 4×/year',
+  '16팀 · 연 6회 글로벌 LAN': '16 teams · Global LAN 6×/year',
+  '16팀 · 10개 지역 운영': '16 teams · 10 regions',
+  '16팀 · 9개 지역 운영': '16 teams · 9 regions',
+  '16팀 · 5개 권역 각자 운영': '16 teams · 5 separate continents',
+  '16팀 · 4개 권역 각자 운영': '16 teams · 4 separate continents',
+  '16팀 · 주당 최고 결과 1회만 적용': '16 teams · Best result per week counts',
+  '8팀 · 주당 최고 결과 1회만 적용': '8 teams · Best result per week counts',
+  '2027 시즌 총 상금 (약 75억 원) — EWC·GOTF·Pick\'em 크라우드펀딩 별도 | 상금 전체 내역 → 상단 탭': '2027 Season Total (~KRW 7.5B) — EWC·GOTF·Pick\'em Crowdfunding separate | Full breakdown → top tab',
+  'KRAFTON Esports Department · Draft v3.1 · May 2026 · CONFIDENTIAL': 'KRAFTON Esports Department · Draft v3.1 · May 2026 · CONFIDENTIAL',
+  'KRAFTON Esports Department · Draft v2.2 · May 2026 · CONFIDENTIAL': 'KRAFTON Esports Department · Draft v2.2 · May 2026 · CONFIDENTIAL',
+  'RS를 지배하는 팀이 PCS 하위권 팀을 밀어내는 자연스러운 구조 — 승강전 없이 포인트로만 작동합니다': 'The team dominating RS naturally displaces the bottom of PCS — no promotion matches, points only.',
+  'RS 우승팀': 'RS Winner',
+  'PCS 최하위팀': 'PCS Last-place team',
 
 };
 
-function normalize(s) { return s.replace(/\s+/g, ' ').trim(); }
+function normalize(s) { return s.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/\s+/g, ' ').trim(); }
 
 // Build normalized lookup so dict keys can have any whitespace.
 const I18N_NORM = {};
