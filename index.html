@@ -1882,13 +1882,8 @@ function switchVersion(ver) {
   buildSchedule();
 
   // Re-apply EN translations after version switch (switchVersion overwrites DOM with Korean)
-  if (typeof currentLang !== 'undefined' && currentLang === 'en') {
-    document.querySelectorAll('[data-orig]').forEach(el => delete el.dataset.orig);
-    if (typeof ORIG_TEXT !== 'undefined') {
-      // WeakMap auto-cleans; the new DOM nodes have no entries
-    }
-    currentLang = 'ko';
-    setLang('en');
+  if (typeof currentLang !== 'undefined' && currentLang === 'en' && typeof applyTranslations === 'function') {
+    applyTranslations();
   }
 }
 
@@ -2517,14 +2512,12 @@ function toggleLang() {
   setLang(currentLang === 'ko' ? 'en' : 'ko');
 }
 
-function setLang(lang) {
-  if (lang === currentLang) return;
-
+function applyTranslations() {
   // Strategy 1: full innerHTML match for leaf-ish elements (text + br/strong/em only)
   document.querySelectorAll('h1, h2, h3, h4, p, span, div, button, td, th, a, li').forEach(el => {
     if (!isFullMatchSafe(el)) return;
-    if (lang === 'en') {
-      if (el.dataset.orig !== undefined) return;
+    if (currentLang === 'en') {
+      if (el.dataset.orig !== undefined) return; // already translated
       const key = normalize(el.innerHTML);
       if (I18N_NORM[key] !== undefined) {
         el.dataset.orig = el.innerHTML;
@@ -2538,17 +2531,17 @@ function setLang(lang) {
     }
   });
 
-  // Strategy 2: per text-node translation for mixed-content elements (e.g., title + badge span)
+  // Strategy 2: per text-node translation for mixed-content elements
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   const textNodes = [];
   while (walker.nextNode()) textNodes.push(walker.currentNode);
   textNodes.forEach(node => {
     const parent = node.parentElement;
-    if (!parent || isFullMatchSafe(parent)) return; // already handled
+    if (!parent || isFullMatchSafe(parent)) return;
     const original = node.textContent;
     const trimmed = original.trim();
     if (!trimmed) return;
-    if (lang === 'en') {
+    if (currentLang === 'en') {
       if (ORIG_TEXT.has(node)) return;
       if (I18N_NORM[trimmed] !== undefined) {
         ORIG_TEXT.set(node, original);
@@ -2561,7 +2554,10 @@ function setLang(lang) {
       }
     }
   });
+}
 
+function setLang(lang) {
+  if (lang === currentLang) return;
   currentLang = lang;
   document.documentElement.lang = lang;
   document.title = lang === 'en'
@@ -2569,10 +2565,15 @@ function setLang(lang) {
     : '2027 PUBG Esports — 한눈에 보기';
   const btn = document.getElementById('lang-btn');
   if (btn) btn.textContent = lang === 'en' ? '한국어' : 'EN';
+
+  // Rebuild dynamic content FIRST (so DOM has fresh KO text from non-lang-aware builders)
   buildRows();
   buildDist();
   buildPtsCompare();
   buildSchedule();
+
+  // THEN translate (walker sees everything including rebuilt content)
+  applyTranslations();
 }
 
 // ── Schedule ────────────────────────────────────────────
