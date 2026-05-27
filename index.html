@@ -657,7 +657,7 @@
       <div class="hero-stat"><span class="num">4</span><span class="label">티어 대회 구조</span></div>
       <div class="hero-stat"><span class="num" id="hero-regions">9</span><span class="label">참여 지역</span></div>
       <div class="hero-stat"><span class="num" id="hero-prize">$6.18M</span><span class="label">연간 총 상금</span></div>
-      <div class="hero-stat"><span class="num">40+</span><span class="label">연간 중계 주</span></div>
+      <div class="hero-stat"><span class="num" id="hero-broadcast">40+</span><span class="label">연간 중계 주</span></div>
     </div>
     <div class="scroll-hint">
       <span>스크롤</span>
@@ -688,14 +688,14 @@
         <div class="ladder-arrow">↑ PGS 출전팀은 그 시점 누적 포인트 상위 16팀 — 직전 PCS 한 번 잘했다고 가는 게 아님</div>
         <div class="tier-card" data-tier="pcs">
           <div class="tier-icon">🌍</div>
-          <div class="tier-info"><div class="tier-name">PCS — 대륙 온라인 리그</div><div class="tier-desc">연 8회 · ASIA · APAC · EMEA · AMs 4개 권역, 각 16팀 · 지역 대회에서 올라온 팀들의 대륙 무대</div></div>
-          <div class="tier-meta"><div class="tier-teams">16</div><div class="tier-teams-label">팀/권역</div><div class="tier-prize">$140,000 × 8회/권역</div></div>
+          <div class="tier-info"><div class="tier-name">PCS — 대륙 온라인 리그</div><div id="pcs-tier-desc" class="tier-desc">연 8회 · ASIA · APAC · EMEA · AMs 4개 권역, 각 16팀 · 지역 대회에서 올라온 팀들의 대륙 무대</div></div>
+          <div class="tier-meta"><div class="tier-teams">16</div><div class="tier-teams-label">팀/권역</div><div id="pcs-tier-prize" class="tier-prize">$140,000 × 8회/권역</div></div>
         </div>
         <div id="ladder-rs-arrow" class="ladder-arrow">↑ RS 1위 50pt가 PCS 최하위 5pt보다 누적치에 빠르게 쌓여 → 점수만으로 자연 추월</div>
         <div class="tier-card" data-tier="rs">
           <div class="tier-icon">🏅</div>
-          <div class="tier-info"><div class="tier-name">Regional Series — 지역 리그</div><div class="tier-desc">연 8회 · 9개 지역 온라인 대회 · PWS·PCL·PTS·PVS·PMS·MENA·EU·AM·BR</div></div>
-          <div class="tier-meta"><div class="tier-teams">9</div><div class="tier-teams-label">지역</div><div class="tier-prize">지역별 차등</div></div>
+          <div class="tier-info"><div class="tier-name">Regional Series — 지역 리그</div><div id="rs-tier-desc" class="tier-desc">연 8회 · 9개 지역 온라인 대회 · PWS·PCL·PTS·PVS·PMS·MENA·EU·AM·BR</div></div>
+          <div class="tier-meta"><div id="rs-tier-teams" class="tier-teams">9</div><div class="tier-teams-label">지역</div><div class="tier-prize">지역별 차등</div></div>
         </div>
         <div id="ladder-open-arrow" class="ladder-arrow">↑ Open 1위 10pt를 꾸준히 누적해 RS 컷오프를 넘기면 자동 진입</div>
         <div class="tier-card" data-tier="open">
@@ -1822,6 +1822,26 @@ function switchVersion(ver) {
   if (hr) hr.textContent = ver === 'v3' ? '10' : '9';
   const hp = document.getElementById('hero-prize');
   if (hp) hp.textContent = ver === 'v3' ? '$5.47M' : '$6.18M';
+  const hb = document.getElementById('hero-broadcast');
+  if (hb) hb.textContent = ver === 'v3' ? '30+' : '40+';
+
+  // Ladder: PCS tier card
+  const pcsDesc = document.getElementById('pcs-tier-desc');
+  if (pcsDesc) pcsDesc.textContent = ver === 'v3'
+    ? '연 8회 · ASIA · SEA · APAC · EMEA · Americas 5개 권역, 각 16팀 · 지역 대회에서 올라온 팀들의 대륙 무대'
+    : '연 8회 · ASIA · APAC · EMEA · AMs 4개 권역, 각 16팀 · 지역 대회에서 올라온 팀들의 대륙 무대';
+  const pcsPrize = document.getElementById('pcs-tier-prize');
+  if (pcsPrize) pcsPrize.textContent = ver === 'v3'
+    ? '권역별 $20K~$40K × 8회'
+    : '$140,000 × 8회/권역';
+
+  // Ladder: RS tier card
+  const rsDesc = document.getElementById('rs-tier-desc');
+  if (rsDesc) rsDesc.textContent = ver === 'v3'
+    ? '연 8회 · 10개 지역 온라인 대회 · PWS·PCL·PTS·PVS·PMS·PSA·MENA·EU·NA·SA'
+    : '연 8회 · 9개 지역 온라인 대회 · PWS·PCL·PTS·PVS·PMS·MENA·EU·AM·BR';
+  const rsTeams = document.getElementById('rs-tier-teams');
+  if (rsTeams) rsTeams.textContent = ver === 'v3' ? '10' : '9';
 
   // Regions title + continent blocks
   const rt = document.getElementById('regions-title');
