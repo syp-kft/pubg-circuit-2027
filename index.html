@@ -1880,6 +1880,16 @@ function switchVersion(ver) {
   buildRows();
   buildPtsCompare(ver);
   buildSchedule();
+
+  // Re-apply EN translations after version switch (switchVersion overwrites DOM with Korean)
+  if (typeof currentLang !== 'undefined' && currentLang === 'en') {
+    document.querySelectorAll('[data-orig]').forEach(el => delete el.dataset.orig);
+    if (typeof ORIG_TEXT !== 'undefined') {
+      // WeakMap auto-cleans; the new DOM nodes have no entries
+    }
+    currentLang = 'ko';
+    setLang('en');
+  }
 }
 
 // ── Page switching ──────────────────────────────────────
