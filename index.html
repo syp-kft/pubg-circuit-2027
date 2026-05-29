@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>2027 PUBG Esports — 한눈에 보기</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -76,8 +76,8 @@
       align-items:center; justify-content:center; text-align:center;
       padding:6rem 1.5rem 4rem;
       background:
-        radial-gradient(ellipse 80% 60% at 50% 0%,rgba(37,99,235,.18) 0%,transparent 70%),
-        radial-gradient(ellipse 60% 50% at 82% 95%,rgba(232,163,61,.10) 0%,transparent 60%),
+        radial-gradient(ellipse 80% 60% at 50% 0%,rgba(232,163,61,.10) 0%,transparent 70%),
+        radial-gradient(ellipse 60% 50% at 82% 95%,rgba(232,163,61,.08) 0%,transparent 60%),
         var(--bg);
       position:relative; overflow:hidden;
     }
@@ -91,31 +91,30 @@
               mask-image:radial-gradient(ellipse 70% 70% at 50% 45%,#000 30%,transparent 80%);
     }
     .zone { position:absolute; border-radius:50%; pointer-events:none; z-index:0; }
-    .zone-blue { width:760px; height:760px; right:-200px; top:-160px; border:2px solid rgba(59,130,246,.16); box-shadow:0 0 120px rgba(37,99,235,.08) inset; }
-    .zone-white { width:420px; height:420px; right:-20px; top:60px; border:2px dashed rgba(226,232,240,.12); }
-    .zone-dot { width:10px; height:10px; right:188px; top:268px; background:var(--pubg2); box-shadow:0 0 18px 4px rgba(200,16,46,.6); }
+    .zone-blue { width:760px; height:760px; right:-200px; top:-160px; border:2px solid rgba(232,163,61,.14); box-shadow:0 0 120px rgba(232,163,61,.05) inset; }
+    .zone-white { width:420px; height:420px; right:-20px; top:60px; border:2px dashed rgba(226,232,240,.10); }
+    .zone-dot { width:10px; height:10px; right:188px; top:268px; background:var(--pubg); box-shadow:0 0 18px 4px rgba(232,163,61,.55); }
     .flight { position:absolute; left:-40px; top:14%; width:60%; height:1px; z-index:0; transform:rotate(-12deg); transform-origin:left center; background:repeating-linear-gradient(90deg,rgba(122,144,176,.45) 0 10px,transparent 10px 20px); }
     .flight span { position:absolute; right:-6px; top:-11px; color:var(--muted); transform:rotate(12deg); font-size:.9rem; }
     .hero-inner { position:relative; z-index:2; display:flex; flex-direction:column; align-items:center; }
     .hero-eyebrow {
       display:inline-flex; align-items:center; gap:.6rem; position:relative;
-      font-family:'Rajdhani',sans-serif; font-size:.95rem; font-weight:700; letter-spacing:.28em;
+      font-size:.82rem; font-weight:700; letter-spacing:.22em;
       color:var(--pubg); text-transform:uppercase; margin-bottom:1.6rem; padding:.45rem 1.1rem;
-      border:1px solid rgba(245,165,36,.35); border-radius:2px; background:rgba(245,165,36,.05);
+      border:1px solid rgba(232,163,61,.35); border-radius:2px; background:rgba(232,163,61,.05);
     }
     .hero-eyebrow::before,.hero-eyebrow::after { content:''; position:absolute; width:9px; height:9px; border:1px solid var(--pubg); }
     .hero-eyebrow::before { left:-1px; top:-1px; border-right:0; border-bottom:0; }
     .hero-eyebrow::after { right:-1px; bottom:-1px; border-left:0; border-top:0; }
-    .hero-eyebrow .live { width:7px; height:7px; border-radius:50%; background:var(--pubg2); animation:hpulse 1.8s infinite; }
-    @keyframes hpulse { 0%{box-shadow:0 0 0 0 rgba(200,16,46,.55);} 70%{box-shadow:0 0 0 8px rgba(200,16,46,0);} 100%{box-shadow:0 0 0 0 rgba(200,16,46,0);} }
+    .hero-eyebrow .live { width:7px; height:7px; border-radius:50%; background:var(--pubg); animation:hpulse 1.8s infinite; }
+    @keyframes hpulse { 0%{box-shadow:0 0 0 0 rgba(232,163,61,.55);} 70%{box-shadow:0 0 0 8px rgba(232,163,61,0);} 100%{box-shadow:0 0 0 0 rgba(232,163,61,0);} }
     .hero h1 {
-      font-size:clamp(2.3rem,6.3vw,5rem); font-weight:900; line-height:1.07; margin-bottom:1.4rem; letter-spacing:-.01em;
-      background:linear-gradient(160deg,#fff 35%,#9fc3f5);
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+      font-size:clamp(2.3rem,6.3vw,5rem); font-weight:900; line-height:1.12; margin-bottom:1.4rem; letter-spacing:-.01em;
+      color:#fff;
     }
     .hero h1 .dot { color:var(--pubg); -webkit-text-fill-color:var(--pubg); }
     .hero-sub { font-size:clamp(1rem,2.4vw,1.2rem); color:var(--muted); max-width:620px; margin-bottom:.5rem; line-height:1.7; }
-    .hero-anchor { font-family:'Rajdhani',sans-serif; font-weight:700; letter-spacing:.26em; font-size:.85rem; text-transform:uppercase; color:#9fb3d0; margin:1.5rem 0 2.6rem; opacity:.9; }
+    .hero-anchor { font-weight:700; letter-spacing:.22em; font-size:.8rem; text-transform:uppercase; color:#9fb3d0; margin:1.5rem 0 2.6rem; opacity:.9; }
     .hero-anchor b { color:var(--pubg); font-weight:700; }
     .hero-stats { position:relative; display:flex; gap:0; flex-wrap:wrap; justify-content:center; margin-bottom:3rem; padding:1.4rem 1.4rem; border:1px solid var(--line); border-radius:4px; background:linear-gradient(180deg,rgba(20,27,45,.6),rgba(14,20,34,.35)); }
     .hero-stats::before,.hero-stats::after,.hero-stats .br::before,.hero-stats .br::after { content:''; position:absolute; width:14px; height:14px; border:2px solid var(--pubg); }
@@ -125,7 +124,7 @@
     .hero-stats .br::after { right:-1px; bottom:-1px; border-left:0; border-top:0; }
     .hero-stat { padding:0 1.9rem; position:relative; }
     .hero-stat + .hero-stat { border-left:1px solid var(--line); }
-    .hero-stat .num { display:block; font-family:'Rajdhani',sans-serif; font-size:2.8rem; font-weight:700; color:#fff; line-height:1; }
+    .hero-stat .num { display:block; font-size:2.6rem; font-weight:900; color:#fff; line-height:1; }
     .hero-stat .tick { display:block; width:26px; height:2px; background:var(--pubg); margin:.5rem auto .55rem; opacity:.85; }
     .hero-stat .label { font-size:.78rem; color:var(--muted); font-weight:500; letter-spacing:.03em; }
     .scroll-hint {
