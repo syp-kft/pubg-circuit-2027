@@ -649,7 +649,8 @@
       <div class="ver-tabs">
         <button class="ver-btn"        data-ver="v1" onclick="switchVersion('v1')">v1.0</button>
         <button class="ver-btn"        data-ver="v2" onclick="switchVersion('v2')">v2.0</button>
-        <button class="ver-btn active" data-ver="v3" onclick="switchVersion('v3')">v3.5 확정</button>
+        <button class="ver-btn"        data-ver="v3" onclick="switchVersion('v3')">v3.5</button>
+        <button class="ver-btn active" data-ver="v4" onclick="switchVersion('v4')">v4.0 NEW</button>
       </div>
       <div class="nav-logo">PUBG ESPORTS 2027</div>
     </div>
@@ -692,10 +693,10 @@
     <div class="hero-anchor">PUBG Esports · <b>Only One Survives</b></div>
     <div class="hero-stats">
       <span class="br"></span>
-      <div class="hero-stat"><span class="num">4</span><span class="tick"></span><span class="label">티어 대회 구조</span></div>
-      <div class="hero-stat"><span class="num" id="hero-regions">9</span><span class="tick"></span><span class="label">참여 지역</span></div>
-      <div class="hero-stat"><span class="num" id="hero-prize">$6.18M</span><span class="tick"></span><span class="label">연간 총 상금</span></div>
-      <div class="hero-stat"><span class="num" id="hero-broadcast">40+</span><span class="tick"></span><span class="label">연간 중계 주</span></div>
+      <div class="hero-stat"><span class="num" id="hero-tiers">4</span><span class="tick"></span><span class="label" id="hero-l1">티어 대회 구조</span></div>
+      <div class="hero-stat"><span class="num" id="hero-regions">9</span><span class="tick"></span><span class="label" id="hero-l2">참여 지역</span></div>
+      <div class="hero-stat"><span class="num" id="hero-prize">$6.18M</span><span class="tick"></span><span class="label" id="hero-l3">연간 총 상금</span></div>
+      <div class="hero-stat"><span class="num" id="hero-broadcast">40+</span><span class="tick"></span><span class="label" id="hero-l4">연간 중계 주</span></div>
     </div>
     </div>
     <div class="scroll-hint">
@@ -715,8 +716,8 @@
       <div class="tiers fade-in">
         <div class="tier-card" data-tier="pgc">
           <div class="tier-icon">🏆</div>
-          <div class="tier-info"><div class="tier-name">PGC — 월드 챔피언십</div><div class="tier-desc">연 1회 (12월) · LAN · 32팀 · 이 무대에서 이기면, 그 해의 세계 챔피언</div></div>
-          <div class="tier-meta"><div class="tier-teams">32</div><div class="tier-teams-label">팀</div><div class="tier-prize">$1,500,000</div></div>
+          <div class="tier-info"><div class="tier-name">PGC — 월드 챔피언십</div><div id="pgc-tier-desc" class="tier-desc">연 1회 (12월) · LAN · 32팀 · 이 무대에서 이기면, 그 해의 세계 챔피언</div></div>
+          <div class="tier-meta"><div id="pgc-tier-teams" class="tier-teams">32</div><div class="tier-teams-label">팀</div><div id="pgc-tier-prize" class="tier-prize">$1,500,000</div></div>
         </div>
         <div class="ladder-arrow">↑ 시즌 누적 포인트 상위 32팀이 PGC 진출 — 단일 대회 성적이 아닌 1년 누적치 기준</div>
         <div class="tier-card" data-tier="pgs">
@@ -1068,7 +1069,7 @@
 
       <!-- SEED DISTRIBUTION TABLE -->
       <div class="section-label" style="margin-top:.5rem">시드 배분표</div>
-      <h3 style="font-size:1.2rem;font-weight:800;margin-bottom:1rem">대회별 참가 시드 배분 <span style="font-size:.82rem;font-weight:500;color:var(--muted)">— v3.5 확정안</span></h3>
+      <h3 id="seed-subtitle" style="font-size:1.2rem;font-weight:800;margin-bottom:1rem">대회별 참가 시드 배분 <span style="font-size:.82rem;font-weight:500;color:var(--muted)">— v3.5 확정안</span></h3>
       <div style="overflow-x:auto;margin-bottom:2.5rem">
       <table class="prize-full-table" style="min-width:640px">
         <thead><tr>
@@ -1728,12 +1729,74 @@ const PRIZE_PAGE_V3_HTML = `<div class="prize-big-num">
   ※ 모든 상금 지급은 팀(법인) 단위로 집행. Pick'em 크라우드펀딩은 별도 지급 일정에 따름.
 </div>`;
 
-function switchVersion(ver) {
-  if (ver === currentVersion) return;
-  currentVersion = ver;
+// ══ v4.0 templates (지역 자율 극대화 · PGS 이상만 통일) ══
+const CYCLE_HTML_V4 = `
+  <div class="cycle-week cw-w1"><div class="cycle-week-header">Week 1</div><div class="cycle-events">
+    <div class="cycle-event ev-open"><div class="cycle-event-name">지역 재량</div><div class="cycle-event-sub">Regional Discretion · 형식·일정·방송 자율</div></div>
+  </div></div>
+  <div class="cycle-week cw-w2"><div class="cycle-week-header">Week 2</div><div class="cycle-events">
+    <div class="cycle-event ev-open"><div class="cycle-event-name">지역 재량</div><div class="cycle-event-sub">Regional Discretion</div></div>
+  </div></div>
+  <div class="cycle-week cw-w1"><div class="cycle-week-header">Week 3</div><div class="cycle-events">
+    <div class="cycle-event ev-open"><div class="cycle-event-name">지역 재량</div><div class="cycle-event-sub">Regional Discretion</div></div>
+  </div></div>
+  <div class="cycle-week cw-w2"><div class="cycle-week-header">Week 4</div><div class="cycle-events">
+    <div class="cycle-event ev-open"><div class="cycle-event-name">지역 재량</div><div class="cycle-event-sub">Regional Discretion</div></div>
+  </div></div>
+  <div class="cycle-week cw-w3"><div class="cycle-week-header">Week 5</div><div class="cycle-events">
+    <div class="cycle-event ev-open"><div class="cycle-event-name">지역 재량</div><div class="cycle-event-sub">Roster Lock 이전 지역 대회 종료·PGS 명단 제출</div></div>
+  </div></div>
+  <div class="cycle-week cw-w4"><div class="cycle-week-header">Week 6 ★</div><div class="cycle-events">
+    <div class="cycle-event ev-pgs"><div class="cycle-event-name">PGS 🏟️</div><div class="cycle-event-sub">글로벌 오프라인 · 16팀 · 유일한 통일 무대</div></div>
+  </div></div>
+`;
+
+const CONTINENT_HTML_V4 = `
+  <div style="background:var(--bg3);border:1px solid var(--line);border-radius:.9rem;padding:1.5rem 1.75rem;margin-bottom:1.25rem">
+    <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:1rem;flex-wrap:wrap"><div style="font-size:1.15rem;font-weight:900;color:var(--rs)">EAST</div><div style="font-size:.85rem;color:var(--muted)">6개 지역 · 각 RS 1위가 PGS 직행</div></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;font-size:.85rem">
+      <div style="background:var(--bg2);border:1px solid var(--line);border-radius:.5rem;padding:.65rem .8rem">KR <span style="color:var(--muted)">· PWS</span></div>
+      <div style="background:var(--bg2);border:1px solid var(--line);border-radius:.5rem;padding:.65rem .8rem">CN <span style="color:var(--muted)">· PCL</span></div>
+      <div style="background:var(--bg2);border:1px solid var(--line);border-radius:.5rem;padding:.65rem .8rem">TH <span style="color:var(--muted)">· PTS</span></div>
+      <div style="background:var(--bg2);border:1px solid var(--line);border-radius:.5rem;padding:.65rem .8rem">VN <span style="color:var(--muted)">· PVS</span></div>
+      <div style="background:var(--bg2);border:1px solid var(--line);border-radius:.5rem;padding:.65rem .8rem">Rest of SEA</div>
+      <div style="background:var(--bg2);border:1px solid var(--line);border-radius:.5rem;padding:.65rem .8rem">South Asia</div>
+    </div>
+  </div>
+  <div style="background:var(--bg3);border:1px solid var(--line);border-radius:.9rem;padding:1.5rem 1.75rem;margin-bottom:1.25rem">
+    <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem;flex-wrap:wrap"><div style="font-size:1.15rem;font-weight:900;color:var(--pgs)">WEST</div><div style="font-size:.85rem;color:var(--muted)">지역 분할·시드 수 재량 (West Esports Team 제안 대기)</div></div>
+    <div style="font-size:.85rem;color:var(--muted);line-height:1.7">예: EU / Ams 2개 지역, 또는 EU · CIS · MENA · Ams 4개 지역 등 — 커뮤니티 이벤트·유저 참여 확대에 가장 효과적인 방식으로 제안. PGS 시드 4~6장 배분(협의 중).</div>
+  </div>
+  <div style="background:var(--bg3);border:1px solid var(--line);border-radius:.9rem;padding:1.5rem 1.75rem">
+    <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem;flex-wrap:wrap"><div style="font-size:1.15rem;font-weight:900;color:var(--gold2)">PUBG POINTS</div><div style="font-size:.85rem;color:var(--muted)">글로벌 랭킹 상위 4~6팀</div></div>
+    <div style="font-size:.85rem;color:var(--muted);line-height:1.7">PUBG Points는 글로벌 대회(PGS·EWC·GOTF)에서만 획득. RS·Open은 지역 자체 포인트 운영 가능(글로벌 미반영).</div>
+  </div>
+`;
+
+const PRIZE_PAGE_V4_HTML = `<div class="prize-big-num">
+  <div class="big" style="-webkit-text-fill-color:var(--muted);color:var(--muted)">TBD</div>
+  <div class="sub">v4.0 상금·일정은 협의 중 — 글로벌 대회는 써드파티 협의, 지역 대회는 지역 제안 예산 기반</div>
+</div>
+<div class="prize-section-title">글로벌 대회 (전 대회 16팀 · 상금 협의 중) <span class="prize-section-badge" style="background:rgba(232,163,61,.2);color:var(--gold2)">TBD</span></div>
+<table class="prize-full-table"><thead><tr><th>대회</th><th>팀</th><th>포인트</th><th>상금·일정</th></tr></thead><tbody>
+  <tr><td>PGC</td><td class="amt">16</td><td>부여</td><td class="amt">협의 중</td></tr>
+  <tr><td>PGS</td><td class="amt">16</td><td>부여</td><td class="amt">협의 중</td></tr>
+  <tr><td>EWC</td><td class="amt">16</td><td>부여</td><td class="amt">써드파티 협의</td></tr>
+  <tr><td>GOTF</td><td class="amt">16</td><td>부여</td><td class="amt">써드파티 협의</td></tr>
+  <tr><td>PNC</td><td class="amt">—</td><td>미부여</td><td class="amt">협의 중</td></tr>
+</tbody></table>
+<div class="prize-section-title">지역 대회 (Open~Regional Series) <span class="prize-section-badge" style="background:rgba(14,165,233,.2);color:var(--rs)">지역 재량</span></div>
+<div style="background:var(--bg3);border:1px solid var(--line);border-radius:.75rem;padding:1.25rem 1.5rem;margin-bottom:1.5rem;font-size:.88rem;color:var(--muted);line-height:1.75">지역 대회 형식·경기일수·방송·지역분할·<strong style="color:var(--text)">예산</strong>은 전부 지역 재량. 각 지역이 목표·예산을 담은 운영 계획을 HQ에 제안(1차 마감 <strong style="color:var(--gold2)">7/14</strong>). 예산 상한 가이드 없음 — 지역 최초 제안 기반 논의.</div>
+<div class="prize-section-title">크라우드펀딩 연간 시상 <span class="prize-section-badge" style="background:rgba(139,92,246,.2);color:#c4b5fd">v3.5와 동일</span></div>
+<div style="background:var(--bg3);border:1px solid var(--line);border-radius:.75rem;padding:1rem 1.5rem;font-size:.85rem;color:var(--muted);line-height:1.7">PNC 개인상 · PGC 팀 지원금(Club Support) 배분 비율은 v3.5 확정안과 동일. 상세 표는 상단 <strong style="color:var(--text)">v3.5</strong> 탭 참고.</div>`;
+
+function switchVersion(verRaw) {
+  if (verRaw === currentVersion) return;
+  currentVersion = verRaw;
+  const ver = (verRaw === 'v4') ? 'v3' : verRaw;  // v4 renders on v3 base, then overridden in v4 block below
 
   document.querySelectorAll('.ver-btn').forEach(b =>
-    b.classList.toggle('active', b.dataset.ver === ver)
+    b.classList.toggle('active', b.dataset.ver === verRaw)
   );
 
   // Swap POINTS — v3 uses same scale as v2
@@ -1839,11 +1902,13 @@ function switchVersion(ver) {
   if (ppiEl) ppiEl.innerHTML = ver === 'v3' ? PRIZE_PAGE_V3_HTML : PRIZE_PAGE_V1_HTML;
 
   const fv = document.getElementById('footer-ver');
-  if (fv) fv.textContent = ver === 'v3'
-    ? 'KRAFTON Esports Department · Draft v3.5 · May 2026 · CONFIDENTIAL'
-    : ver === 'v2'
-      ? 'KRAFTON Esports Department · Draft v2.2 · May 2026 · CONFIDENTIAL'
-      : 'KRAFTON Esports Department · Draft v1.3 · May 2026 · CONFIDENTIAL';
+  if (fv) fv.textContent = verRaw === 'v4'
+    ? 'KRAFTON Esports Department · Draft v4.0 · Jul 2026 · CONFIDENTIAL'
+    : verRaw === 'v3'
+      ? 'KRAFTON Esports Department · Draft v3.5 · May 2026 · CONFIDENTIAL'
+      : verRaw === 'v2'
+        ? 'KRAFTON Esports Department · Draft v2.2 · May 2026 · CONFIDENTIAL'
+        : 'KRAFTON Esports Department · Draft v1.3 · May 2026 · CONFIDENTIAL';
 
   // Regions page: RS / PCS badges
   document.querySelectorAll('.rm-pts').forEach(el =>
@@ -1916,6 +1981,77 @@ function switchVersion(ver) {
   buildRows();
   buildPtsCompare(ver);
   buildSchedule();
+
+  // ══ v4.0 overrides (지역 자율 극대화) — applied on top of v3 base render ══
+  if (verRaw === 'v4') {
+    const S = (id, t) => { const e = document.getElementById(id); if (e) e.textContent = t; };
+    const H = (id, h) => { const e = document.getElementById(id); if (e) e.innerHTML = h; };
+
+    // Hero
+    H('hero-eyebrow', '<span class="live"></span>2027 Global Circuit · v4.0 — Regional Autonomy');
+    S('hero-tiers', '16');      S('hero-l1', '전 대회 팀 수');
+    S('hero-regions', '6+');    S('hero-l2', 'EAST 고정 · West 재량');
+    S('hero-prize', '3');       S('hero-l3', '글로벌 포인트 대회');
+    S('hero-broadcast', '100%'); S('hero-l4', '지역 대회 자율');
+
+    // Cycle
+    S('cycle-label', '6-Week Cycle');
+    H('cycle-title', '지역 재량 5주 +<br>PGS 1주');
+    const cg = document.getElementById('cycle-grid');
+    if (cg) { cg.classList.add('six-col'); cg.innerHTML = CYCLE_HTML_V4; }
+
+    // Ladder tier cards
+    S('pgc-tier-desc', '연 1회 · LAN · 16팀 · GS/GF 분리 폐지 — 모든 대회 16팀 단일 스테이지');
+    S('pgc-tier-teams', '16');  S('pgc-tier-prize', 'TBD');
+    S('pgs-tier-desc', '글로벌 오프라인 · 16팀 · PGS 이상만 통일되는 유일한 무대 · Roster Lock 후 확정');
+    S('pgs-tier-prize', 'TBD');
+    S('pcs-tier-desc', 'v4.0에서 고정 폐지 — Open~RS와 함께 지역 재량 영역 (RS–PCS–PGS 실효성 검증 중)');
+    S('pcs-tier-prize', '지역 재량');
+    S('rs-tier-desc', '완전 지역 재량 · 형식·경기일·방송·지역분할·Open 여부 모두 지역 결정 · PUBG Points 미부여(지역 자체 포인트 가능)');
+    S('rs-tier-teams', '재량');
+    S('ladder-rs-arrow', '↑ RS 상위팀이 PGS·EWC·PGC 시드로 직행 — 지역별 상위 1~2팀');
+    S('ladder-open-arrow', '↑ Open~RS는 지역이 자유롭게 설계. PUBG Points는 글로벌 대회에서만 쌓임');
+
+    // Ladder logic box
+    S('ll-left-comp', 'Regional Series'); S('ll-rs-pts', '재량'); S('ll-left-result', '지역 재량 운영');
+    S('ll-right-comp', 'PGS'); S('ll-pcs-pts', '통일'); S('ll-right-result', 'PGS 이상 글로벌');
+    S('ll-caption', 'v4.0: PGS 이상만 통일 · Open~Regional Series는 지역 완전 재량');
+
+    // Points note
+    H('dist-note', '✦ v4.0: RS·Open은 <strong>PUBG Points 미부여</strong> (지역 자체 포인트 운영 가능).<br>✦ PUBG Points는 글로벌 대회(PGS·EWC·GOTF·PGC)에서만 획득. PNC 미부여.');
+
+    // Regions
+    S('regions-title', '글로벌 시드 구조 — PGS 16팀');
+    H('continent-blocks', CONTINENT_HTML_V4);
+
+    // Prize page + home prize
+    H('prize-page-inner', PRIZE_PAGE_V4_HTML);
+    S('prize-total-amt', 'TBD');
+    S('prize-total-sub', 'v4.0 상금·일정은 협의 중 — 글로벌 대회 써드파티 협의 / 지역 대회 예산은 지역 제안 기반(7/14 1차 마감)');
+    H('prize-bars-wrap', '<div style="background:var(--bg3);border:1px solid var(--line);border-radius:.75rem;padding:1.25rem 1.5rem;font-size:.9rem;color:var(--muted);line-height:1.7">v4.0에서는 상금 배분표가 확정되지 않았습니다. 전 대회 16팀 · 글로벌 대회(PGS·EWC·GOTF·PGC)만 PUBG Points 부여 · 지역 대회 예산은 지역 자율 제안 기반.</div>');
+
+    // Events grid
+    H('events-grid',
+      '<div class="ev-group-label">KRAFTON 주관 <span>· 직접 운영</span></div>' +
+      '<div class="event-card ev-pnc"><div class="event-card-top"><div class="event-month">일정 협의 중</div><div class="event-name">PNC</div><div class="event-full">PUBG Nations Cup</div></div><div class="event-card-body"><div class="event-tag">🏳️ 국가대항전</div><div class="event-desc">국가대항전. 포인트 미부여. PCV는 PNC·PGC에만 적용되는 KPI.</div><div class="event-prize">상금·일정 협의 중</div></div></div>' +
+      '<div class="event-card ev-pgc"><div class="event-card-top"><div class="event-month">12월 (협의)</div><div class="event-name">PGC</div><div class="event-full">PUBG Global Championship</div></div><div class="event-card-body"><div class="event-tag">🏆 World Championship</div><div class="event-desc">16팀. GS/GF 분리 폐지. RS 1위 + PUBG Points 상위 + 개최지 상위팀 참가.</div><div class="event-prize">상금 협의 중</div></div></div>' +
+      '<div class="ev-group-label" style="margin-top:.75rem">3rd-party 주관 <span>· PUBG Points 부여</span></div>' +
+      '<div class="event-card ev-ewc"><div class="event-card-top"><div class="event-month">일정 협의 중</div><div class="event-name">EWC</div><div class="event-full">Esports World Cup</div></div><div class="event-card-body"><div class="event-tag">🌐 글로벌 초청</div><div class="event-desc">16팀. RS 상위 2팀 + PUBG Points 상위 + 전년도 우승팀. 포인트 부여.</div><div class="event-prize">주최측 별도 상금</div></div></div>' +
+      '<div class="event-card ev-gotf"><div class="event-card-top"><div class="event-month">일정 협의 중</div><div class="event-name">GOTF</div><div class="event-full">Games of the Future</div></div><div class="event-card-body"><div class="event-tag">🎮 3rd-party LAN</div><div class="event-desc">16팀. PUBG Points 상위팀 참가. 포인트 부여.</div><div class="event-prize">주최측 별도 상금</div></div></div>');
+
+    // Schedule + seed page
+    S('sched-desc', 'v4.0: 6주 사이클 = 지역 재량 5주 + PGS 1주. 글로벌 대회(PNC·EWC·GOTF·PGC) 일정은 써드파티 협의로 변동 가능.');
+    H('seed-subtitle', '대회별 참가 시드 배분 <span style="font-size:.82rem;font-weight:500;color:var(--muted)">— 아래 표는 v3.5 기준. v4.0 시드는 EAST 6(각 RS 1위) · West 4~6(재량) · PUBG Points 4~6로 개편(협의 중)</span>');
+  } else {
+    // Reset v4-only static elements back to defaults for v1/v2/v3
+    const S = (id, t) => { const e = document.getElementById(id); if (e) e.textContent = t; };
+    const H = (id, h) => { const e = document.getElementById(id); if (e) e.innerHTML = h; };
+    H('hero-eyebrow', '<span class="live"></span>2027 Global Circuit · New Structure');
+    S('hero-tiers', '4'); S('hero-l1', '티어 대회 구조'); S('hero-l2', '참여 지역'); S('hero-l3', '연간 총 상금'); S('hero-l4', '연간 중계 주');
+    S('pgc-tier-desc', '연 1회 (12월) · LAN · 32팀 · 이 무대에서 이기면, 그 해의 세계 챔피언');
+    S('pgc-tier-teams', '32'); S('pgc-tier-prize', '$1,500,000');
+    H('seed-subtitle', '대회별 참가 시드 배분 <span style="font-size:.82rem;font-weight:500;color:var(--muted)">— v3.5 확정안</span>');
+  }
 
   // Re-apply EN translations after version switch (switchVersion overwrites DOM with Korean)
   if (typeof currentLang !== 'undefined' && currentLang === 'en' && typeof applyTranslations === 'function') {
@@ -2863,9 +2999,9 @@ function buildSchedule() {
 
 buildRows();
 buildDist();
-buildPtsCompare('v3');
+buildPtsCompare('v4');
 buildSchedule();
-switchVersion('v3');
+switchVersion('v4');
 
 // ── Fade-in ─────────────────────────────────────────────
 const observer = new IntersectionObserver(entries => {
