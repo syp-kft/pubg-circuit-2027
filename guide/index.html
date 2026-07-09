@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PUBG 이스포츠 처음 보는 사람을 위한 안내서 — 2027</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0E0F12; --card:#17181C; --card2:#1D1F24; --line:#2A2C33;
+  --txt:#E8E8EA; --muted:#9A9CA3; --accent:#E8A33D; --accent-dim:#8a6524;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:'Noto Sans KR',sans-serif;line-height:1.7}
+a{color:var(--accent);text-decoration:none}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+
+/* hero */
+.hero{padding:110px 0 70px;text-align:center;background:
+  radial-gradient(ellipse 70% 55% at 50% 0%, rgba(232,163,61,.13), transparent),
+  var(--bg)}
+.hero .tag{display:inline-block;border:1px solid var(--accent);color:var(--accent);
+  font-size:12px;letter-spacing:.25em;padding:6px 16px;margin-bottom:26px}
+.hero h1{font-size:clamp(30px,5.5vw,58px);font-weight:900;line-height:1.25}
+.hero h1 em{color:var(--accent);font-style:normal}
+.hero p.sub{margin-top:20px;color:var(--muted);font-size:17px}
+.hero .stats{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:44px}
+.hero .stat{background:var(--card);border:1px solid var(--line);padding:16px 26px;min-width:150px}
+.hero .stat b{display:block;color:var(--accent);font-size:24px;font-weight:900}
+.hero .stat span{font-size:13px;color:var(--muted)}
+.draftnote{background:#241c0d;border:1px solid var(--accent-dim);color:#d9b877;
+  font-size:13px;padding:10px 16px;text-align:center}
+
+/* nav */
+nav{position:sticky;top:0;background:rgba(14,15,18,.94);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);z-index:50}
+nav .wrap{display:flex;gap:4px;overflow-x:auto;padding:0 12px}
+nav a{color:var(--muted);font-size:13.5px;padding:14px 13px;white-space:nowrap;font-weight:500}
+nav a:hover{color:var(--accent)}
+
+/* sections */
+section{padding:78px 0;border-bottom:1px solid var(--line)}
+.snum{color:var(--accent);font-size:13px;letter-spacing:.3em;font-weight:700}
+h2{font-size:clamp(24px,3.4vw,36px);font-weight:900;margin:10px 0 14px}
+p.lead{color:var(--muted);font-size:16.5px;max-width:760px;margin-bottom:36px}
+p.lead b, .lead strong{color:var(--txt)}
+
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);padding:26px}
+.card h3{font-size:18px;font-weight:700;margin-bottom:10px}
+.card h3 .en{display:block;font-size:11.5px;color:var(--accent);letter-spacing:.15em;font-weight:500;margin-bottom:6px;text-transform:uppercase}
+.card p{color:var(--muted);font-size:14.5px}
+.card p b{color:var(--txt)}
+.card .big{font-size:30px;font-weight:900;color:var(--accent)}
+
+/* phase steps */
+.steps{display:grid;gap:14px}
+.step{display:flex;gap:20px;background:var(--card);border:1px solid var(--line);padding:22px 26px;align-items:flex-start}
+.step .no{font-size:26px;font-weight:900;color:var(--accent);min-width:52px}
+.step h3{font-size:17px;font-weight:700}
+.step p{color:var(--muted);font-size:14.5px;margin-top:4px}
+
+/* tables */
+table{width:100%;border-collapse:collapse;background:var(--card);font-size:14.5px}
+th,td{border:1px solid var(--line);padding:11px 14px;text-align:left}
+th{background:var(--card2);color:var(--accent);font-weight:700;font-size:13.5px}
+td b{color:var(--accent)}
+.tbl-note{color:var(--muted);font-size:13px;margin-top:10px}
+
+/* cycle diagram */
+.cycle{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:26px 0}
+.cyc{background:var(--card);border:1px solid var(--line);padding:16px 10px;text-align:center}
+.cyc .w{font-size:11px;color:var(--muted);letter-spacing:.15em}
+.cyc .n{font-weight:900;font-size:15.5px;margin-top:6px}
+.cyc.hot{border-color:var(--accent);background:#1d1810}
+.cyc.hot .n{color:var(--accent)}
+.ladder{background:var(--card);border:1px solid var(--line);padding:26px;margin-top:18px}
+.ladder .row{display:flex;align-items:center;gap:14px;padding:13px 0;border-bottom:1px dashed var(--line);flex-wrap:wrap}
+.ladder .row:last-child{border:none}
+.ladder .lv{min-width:96px;font-weight:900;color:var(--accent);font-size:15px}
+.ladder .row p{color:var(--muted);font-size:14.5px;flex:1;min-width:240px}
+.ladder .row p b{color:var(--txt)}
+
+/* calendar strip */
+.calrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.calchip{background:var(--card);border:1px solid var(--line);padding:12px 18px;font-size:14px}
+.calchip b{color:var(--accent);display:block;font-size:13px}
+
+/* glossary */
+.glo{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.glo .card h3{color:var(--accent);font-size:16px}
+
+/* faq */
+details{background:var(--card);border:1px solid var(--line);margin-bottom:12px}
+summary{padding:18px 22px;cursor:pointer;font-weight:700;font-size:15.5px;list-style:none}
+summary::before{content:"Q. ";color:var(--accent)}
+details p{padding:0 22px 20px;color:var(--muted);font-size:14.5px}
+details p b{color:var(--txt)}
+
+footer{padding:50px 0 70px;text-align:center;color:var(--muted);font-size:13px}
+@media(max-width:720px){.cycle{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+
+<div class="draftnote">DRAFT PREVIEW — 2027 시즌 구조 초안 기준. 일정·수치는 공식 발표 전 변경될 수 있습니다.</div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="tag">PUBG ESPORTS · BEGINNER'S GUIDE · 2027</div>
+    <h1>100명이 뛰어내리고,<br><em>하나의 팀만 살아남는다.</em></h1>
+    <p class="sub">PUBG 이스포츠를 처음 보는 당신을 위한 안내서 — 규칙 몰라도 됩니다. 이 페이지 하나면 오늘 밤부터 즐길 수 있습니다.</p>
+    <div class="stats">
+      <div class="stat"><b>16팀 64명</b><span>한 경기에 동시 출전</span></div>
+      <div class="stat"><b>11개 지역</b><span>전 세계 리그가 매주 달린다</span></div>
+      <div class="stat"><b>연 7회</b><span>글로벌 무대 (PGS×4 + EWC·GOTF·PGC)</span></div>
+      <div class="stat"><b>$1,500,000</b><span>왕중왕전 PGC 상금</span></div>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#what">이게 뭔가요</a>
+  <a href="#match">한 경기의 흐름</a>
+  <a href="#scoring">점수 읽는 법</a>
+  <a href="#season">2027 시즌 구조</a>
+  <a href="#tournaments">대회 소개</a>
+  <a href="#calendar">연간 일정</a>
+  <a href="#watch">어디서 보나요</a>
+  <a href="#join">직접 참여하기</a>
+  <a href="#glossary">용어 사전</a>
+  <a href="#faq">FAQ</a>
+</div></nav>
+
+<main class="wrap">
+
+<section id="what">
+  <div class="snum">SECTION 01</div>
+  <h2>PUBG 이스포츠, 이게 뭔가요?</h2>
+  <p class="lead">축구는 두 팀이 싸웁니다. PUBG는 <b>16개 팀 64명이 한 판에서 동시에</b> 싸웁니다. 거대한 섬에 맨몸으로 뛰어내려 무기를 줍고, 점점 좁아지는 자기장 안에서 버티다, <b>마지막 한 팀</b>이 남을 때까지. 이 승리를 "치킨"이라 부릅니다 — <b>WINNER WINNER CHICKEN DINNER.</b></p>
+  <div class="grid g3">
+    <div class="card"><h3><span class="en">Battle Royale</span>1:1이 아니라 15:1의 스포츠</h3><p>모든 경기에서 내 팀의 적은 15개 팀. 총싸움 실력만큼 <b>어디에 서 있을지 판단하는 능력</b>이 승부를 가릅니다. 그래서 "머리로 보는 슈팅 게임"입니다.</p></div>
+    <div class="card"><h3><span class="en">Circuit Sport</span>골프·F1처럼, 서킷으로 돕니다</h3><p>한 번의 긴 리그가 아니라 <b>주 단위의 짧은 대회가 1년 내내</b> 이어집니다. 매 사이클 지역에서 올라온 팀들이 글로벌 무대에서 만나고, 연말에 왕중왕전으로 끝납니다.</p></div>
+    <div class="card"><h3><span class="en">Open Ecosystem</span>누구나 올라올 수 있습니다</h3><p>프랜차이즈 폐쇄 리그가 아닙니다. <b>당신의 스쿼드도 오픈 예선부터 시작해</b> 지역 리그, 그리고 글로벌 무대까지 올라갈 수 있는 열린 구조입니다.</p></div>
+  </div>
+</section>
+
+<section id="match">
+  <div class="snum">SECTION 02</div>
+  <h2>한 경기는 이렇게 흘러갑니다</h2>
+  <p class="lead">한 매치는 약 30분. 처음 보는 사람은 이 5단계만 알면 화면이 읽히기 시작합니다.</p>
+  <div class="steps">
+    <div class="step"><div class="no">01</div><div><h3>낙하 (Drop)</h3><p>64명이 같은 비행기에서 뛰어내립니다. 어디에 착지하느냐부터 전략 — 같은 지역에 두 팀이 내리면 시작 1분 만에 교전이 터집니다.</p></div></div>
+    <div class="step"><div class="no">02</div><div><h3>파밍 (Loot)</h3><p>건물을 돌며 총·방어구·의료품을 줍습니다. 조용해 보여도 팀마다 "어떻게 싸울지"를 준비하는 시간입니다.</p></div></div>
+    <div class="step"><div class="no">03</div><div><h3>로테이션 (이동)</h3><p>파란 자기장(블루존)이 섬을 조여옵니다. 안전 구역으로 <b>언제, 어떤 길로 이동하느냐</b>가 팀의 실력. 좋은 자리를 먼저 잡는 팀이 유리합니다.</p></div></div>
+    <div class="step"><div class="no">04</div><div><h3>교전</h3><p>구역이 좁아질수록 팀들이 부딪힙니다. 킬 1개 = 1점. 생존만으로는 이길 수 없어서 어느 순간엔 반드시 싸워야 합니다.</p></div></div>
+    <div class="step"><div class="no">05</div><div><h3>파이널 서클</h3><p>마지막 자기장. 남은 팀 전원이 한 화면 안에 몰립니다. <b>경기의 하이라이트</b> — 여기서 살아남은 한 팀이 치킨을 가져갑니다.</p></div></div>
+  </div>
+</section>
+
+<section id="scoring">
+  <div class="snum">SECTION 03</div>
+  <h2>점수 읽는 법 — 30초면 됩니다</h2>
+  <p class="lead">공식 규정 SUPER의 채점은 단순합니다. <b>경기 점수 = 순위 점수 + 킬 점수(킬 1개 = 1점)</b>. 이걸 여러 매치 누적해서 최종 순위를 정합니다.</p>
+  <div class="grid g2">
+    <div>
+      <table>
+        <tr><th>매치 순위</th><th>순위 점수</th></tr>
+        <tr><td>1위 (치킨)</td><td><b>10점</b></td></tr>
+        <tr><td>2위</td><td>6점</td></tr>
+        <tr><td>3위</td><td>5점</td></tr>
+        <tr><td>4위</td><td>4점</td></tr>
+        <tr><td>5위</td><td>3점</td></tr>
+        <tr><td>6위</td><td>2점</td></tr>
+        <tr><td>7~8위</td><td>1점</td></tr>
+        <tr><td>9~16위</td><td>0점</td></tr>
+      </table>
+      <p class="tbl-note">예: 10킬로 치킨을 먹으면 10 + 10 = 20점.</p>
+    </div>
+    <div class="grid" style="gap:14px">
+      <div class="card"><h3>왜 재밌냐면</h3><p>순위 점수만으로는 부족해서 <b>숨어만 있는 팀은 이길 수 없습니다.</b> 킬을 위해 리스크를 감수하는 순간이 계속 만들어집니다.</p></div>
+      <div class="card"><h3>한 경기 망해도 끝이 아닙니다</h3><p>대회는 여러 매치의 <b>누적 포인트 레이스</b>. 1경기에서 광탈해도 다음 경기 치킨으로 뒤집을 수 있습니다. 마지막 매치까지 순위가 출렁이는 이유입니다.</p></div>
+      <div class="card"><h3>화면에서 이것만 보세요</h3><p>중계 화면의 <b>실시간 스탠딩과 진출선(컷라인)</b>. "지금 이 팀이 올라가느냐 떨어지느냐"가 항상 표시됩니다. 그 선 근처 팀들의 경기가 가장 뜨겁습니다.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="season">
+  <div class="snum">SECTION 04</div>
+  <h2>2027 시즌은 이렇게 돕니다</h2>
+  <p class="lead">2027 시즌의 기본 단위는 <b>6주짜리 사이클</b>입니다. 이 사이클이 1년에 4번 반복되고, 연말에 왕중왕전 PGC로 끝납니다. 지역에서 이기고 → 글로벌로 올라가는 사다리가 6주마다 새로 열립니다.</p>
+  <div class="cycle">
+    <div class="cyc"><div class="w">WEEK 1</div><div class="n">지역 재량</div></div>
+    <div class="cyc"><div class="w">WEEK 2</div><div class="n">RS 결승</div></div>
+    <div class="cyc"><div class="w">WEEK 3</div><div class="n">PCS</div></div>
+    <div class="cyc"><div class="w">WEEK 4</div><div class="n">이벤트</div></div>
+    <div class="cyc"><div class="w">WEEK 5</div><div class="n">브레이크</div></div>
+    <div class="cyc hot"><div class="w">WEEK 6</div><div class="n">PGS</div></div>
+  </div>
+  <div class="ladder">
+    <div class="row"><div class="lv">오픈 예선</div><p><b>누구나 참가.</b> 아마추어 스쿼드가 지역 리그로 올라가는 문. 각 지역이 자기 방식으로 운영합니다.</p></div>
+    <div class="row"><div class="lv">RS</div><p><b>지역 시리즈 (Regional Series).</b> 11개 지역 리그. 결승 주말 이틀 10매치, 16팀 — <b>우승팀은 그 사이클 PGS 직행.</b></p></div>
+    <div class="row"><div class="lv">PCS</div><p><b>최후의 예선.</b> RS 결승 2~9위 팀들이 권역(5개)별로 모여 한 번 더 붙습니다. 우승팀만 PGS 막차 탑승.</p></div>
+    <div class="row"><div class="lv">PGS</div><p><b>글로벌 시리즈.</b> 24팀 · 5일. RS 우승 11 + PCS 우승 5 + Standings 상위 8. 여기서 <b>PUBG Points</b>를 법니다.</p></div>
+    <div class="row"><div class="lv">PGC</div><p><b>왕중왕전.</b> 시즌 최고의 32팀. 매일 밤 8팀이 오르내리는 승강 서바이벌 끝에 세계 챔피언 탄생.</p></div>
+  </div>
+  <p class="tbl-note" style="margin-top:16px">이 순환 위에서 1년간 쌓은 포인트가 <b>Global Circuit Standings</b>. 매 사이클 PGS 시드와 연말 PGC 진출권이 여기서 나옵니다. 골프의 상금 랭킹, F1의 드라이버 포인트와 같은 역할입니다.</p>
+</section>
+
+<section id="tournaments">
+  <div class="snum">SECTION 05</div>
+  <h2>2027년, 무엇을 보게 되나요</h2>
+  <p class="lead">규모와 성격이 다른 무대들이 1년 내내 이어집니다. 하나만 골라 봐도 되고, 사다리를 따라 올라가며 봐도 됩니다.</p>
+  <div class="grid g2">
+    <div class="card"><h3><span class="en">Regional Series · 연 4사이클</span>RS — 우리 동네 리그</h3><p>한국·중국·베트남·태국·유럽·중동·아메리카… <b>11개 지역</b>에서 매 사이클 열리는 지역 리그. 내 나라 팀, 내 언어 중계로 입문하기 가장 좋은 무대입니다. 결승은 주말 이틀 10매치.</p></div>
+    <div class="card"><h3><span class="en">Challenger Series · 연 4회</span>PCS — 마지막 티켓 한 장</h3><p>RS에서 아깝게 미끄러진 팀들의 <b>패자부활전.</b> 권역별 16팀 중 우승팀만 PGS로. "벼랑 끝 서사"가 매 사이클 만들어지는 무대입니다.</p></div>
+    <div class="card"><h3><span class="en">PUBG Global Series · 연 4회</span>PGS — 매 사이클의 글로벌 결전</h3><p><b>24팀 · 5일(수~일)</b> · 상금 $200,000 · 우승 1,000pt. 그룹 스테이지 3일 → 파이널 2일. 전 세계 지역 챔피언들이 6주마다 한 무대에서 만납니다.</p></div>
+    <div class="card"><h3><span class="en">PUBG Global Championship · 연 1회</span>PGC — 왕중왕전</h3><p><b>32팀 · 상금 $1,500,000.</b> 시즌 성적순으로 리더스/챌린저스 두 로비로 나뉘어 시작 — <b>매일 밤 8팀이 강등되고 8팀이 승격</b>됩니다. 내일의 로비는 오늘 정해진다. 마지막 이틀, 그랜드 파이널 10매치로 세계 챔피언이 탄생합니다.</p></div>
+    <div class="card"><h3><span class="en">PUBG Nations Cup</span>PNC — 국가대항전 (7/9~11)</h3><p>클럽이 아니라 <b>국가대표</b>로 싸우는 올스타전. 규칙을 몰라도 "어느 나라를 응원할지"는 바로 정해지죠. 이스포츠 입문자에게 가장 쉬운 문입니다.</p></div>
+    <div class="card"><h3><span class="en">Special Events</span>10주년 · EWC · GOTF</h3><p><b>3/27 PUBG 이스포츠 10주년 기념 이벤트</b>로 시즌이 뜨거워지고, 여름엔 <b>EWC(7월)</b>와 <b>GOTF(8월)</b> — 두 대회 모두 PUBG Points가 걸린 글로벌 무대입니다.</p></div>
+  </div>
+</section>
+
+<section id="calendar">
+  <div class="snum">SECTION 06</div>
+  <h2>2027 연간 일정 한눈에</h2>
+  <p class="lead">이 표 하나 저장해두면 1년이 보입니다. 사이클마다 리듬은 같습니다: <b>RS 결승(토일) → PCS(토일) → 로스터 확정(월) → PGS(수~일).</b></p>
+  <table>
+    <tr><th>사이클</th><th>RS 결승</th><th>PCS</th><th>PGS</th></tr>
+    <tr><td>Cycle 1</td><td>4/10~11</td><td>4/17~18</td><td><b>PGS #1</b> · 5/5~9</td></tr>
+    <tr><td>Cycle 2</td><td>5/22~23</td><td>5/29~30</td><td><b>PGS #2</b> · 6/16~20</td></tr>
+    <tr><td>Cycle 3</td><td>8/21~22</td><td>8/28~29</td><td><b>PGS #3</b> · 9/15~19</td></tr>
+    <tr><td>Cycle 4</td><td>10/9~10</td><td>10/16~17</td><td><b>PGS #4</b> · 11/3~7</td></tr>
+  </table>
+  <div class="calrow">
+    <div class="calchip"><b>3/27</b>10주년 이벤트</div>
+    <div class="calchip"><b>7/9~11</b>PNC 국가대항전</div>
+    <div class="calchip"><b>7/21~25</b>EWC</div>
+    <div class="calchip"><b>8/6~8</b>GOTF</div>
+    <div class="calchip"><b>11/27~12/5</b>PGC 왕중왕전</div>
+  </div>
+</section>
+
+<section id="watch">
+  <div class="snum">SECTION 07</div>
+  <h2>어디서, 어떻게 보나요</h2>
+  <p class="lead">전부 <b>무료</b>입니다. 성향대로 고르세요 — 해설과 함께, 지도를 내려다보며, 좋아하는 선수의 눈으로, 혹은 좋아하는 스트리머의 방에서.</p>
+  <div class="grid g2">
+    <div class="card"><h3><span class="en">Main Broadcast</span>📺 메인 중계</h3><p>캐스터·해설이 있는 기본 채널. 한국어는 <b>CHZZK · SOOP</b>, 글로벌은 Twitch·YouTube 등 다국어 동시 중계. 처음이라면 여기서 시작하세요.</p></div>
+    <div class="card"><h3><span class="en">Map View</span>🗺️ 맵뷰</h3><p>하늘에서 맵 전체를 내려다보는 시점. <b>16팀의 위치와 이동이 한눈에</b> 보여서 "판을 읽는 재미"에 눈뜨면 이쪽으로 넘어오게 됩니다.</p></div>
+    <div class="card"><h3><span class="en">Player POV</span>🎮 선수 개인 화면</h3><p>출전 선수 전원이 자기 시점(POV)을 직접 생중계합니다. 좋아하는 선수가 생기면 <b>그 선수의 눈으로</b> 경기를 볼 수 있습니다.</p></div>
+    <div class="card"><h3><span class="en">Watch Party</span>🎙️ 스트리머와 함께</h3><p>수많은 스트리머가 자기 채널에서 경기를 같이 보며 떠듭니다. 전문 해설보다 <b>친구 집에서 보는 느낌</b>이 좋다면 워치파티가 답입니다.</p></div>
+  </div>
+</section>
+
+<section id="join">
+  <div class="snum">SECTION 08</div>
+  <h2>보기만 하나요? 직접 하세요</h2>
+  <p class="lead">PUBG 이스포츠는 관람석과 필드의 거리가 가장 가까운 이스포츠입니다.</p>
+  <div class="grid g2">
+    <div class="card"><h3><span class="en">Pick'em Challenge</span>🎯 순위 맞히기</h3><p>게임 클라이언트의 이스포츠 탭에서 우승팀·순위를 예측. 맞히면 포인트를 모아 <b>한정 인게임 아이템</b>으로 교환합니다.</p></div>
+    <div class="card"><h3><span class="en">Drops</span>🎁 보면서 받기</h3><p>계정 연동 후 공식 중계를 시청하면 <b>한정 아이템이 무료로</b> 떨어집니다. 시청 자체가 보상이 되는 이스포츠만의 문화.</p></div>
+    <div class="card"><h3><span class="en">Fantasy</span>📈 나만의 드림팀</h3><p>예산 안에서 실제 참가팀으로 드림팀을 꾸리고, 실제 경기 성적으로 포인트를 얻는 <b>인게임 판타지 리그.</b></p></div>
+    <div class="card"><h3><span class="en">Open Qualifier</span>🪂 그리고, 출전</h3><p>이 모든 무대의 첫 계단은 <b>오픈 예선</b>입니다. 참가 자격: 스쿼드 하나. <b>당신의 스쿼드도 PGS까지 — 그것이 이 판의 규칙입니다.</b></p></div>
+  </div>
+</section>
+
+<section id="glossary">
+  <div class="snum">SECTION 09</div>
+  <h2>이것만 알면 되는 용어 사전</h2>
+  <p class="lead">중계에서 매일 나오는 말들. 12개면 충분합니다.</p>
+  <div class="glo">
+    <div class="card"><h3>치킨 (Chicken Dinner)</h3><p>매치 1위. "WINNER WINNER CHICKEN DINNER"에서 온 말. 순위 점수 10점.</p></div>
+    <div class="card"><h3>WWCD</h3><p>치킨의 영어 약자. "이번 매치 WWCD는 ○○팀" 식으로 씁니다.</p></div>
+    <div class="card"><h3>블루존 / 자기장</h3><p>맵을 조여오는 피해 구역. "블루 먹으면서 간다" = 피해를 감수하고 이동한다.</p></div>
+    <div class="card"><h3>오더 (IGL)</h3><p>경기 중 팀의 모든 판단을 내리는 인게임 지휘관. 낙하 지점·이동·교전 여부를 실시간 결정.</p></div>
+    <div class="card"><h3>랜마전</h3><p>착지 직후 같은 랜드마크에서 벌어지는 초반 전투. 경기 시작 1분의 하이라이트.</p></div>
+    <div class="card"><h3>기절 (녹다운)</h3><p>체력 0으로 쓰러진 상태. 팀원이 살릴 수 있습니다. 확인사살되면 킬.</p></div>
+    <div class="card"><h3>로테이션</h3><p>자기장에 맞춰 안전 구역으로 이동하는 것. 먼저 가서 자리 잡기 vs 늦게 가서 기습하기.</p></div>
+    <div class="card"><h3>진출선 / 버블</h3><p>다음 라운드로 올라가는 커트라인. 그 경계에 걸친 팀들을 "버블"이라 부릅니다.</p></div>
+    <div class="card"><h3>이월 (Carry-over)</h3><p>이전 스테이지의 베스트 성적 일부를 결승에 들고 가는 것. 잘한 팀의 어드밴티지.</p></div>
+    <div class="card"><h3>승강 (리더스/챌린저스)</h3><p>PGC에서 매일 밤 상위 로비(리더스)와 하위 로비(챌린저스) 사이 8팀이 교체되는 것.</p></div>
+    <div class="card"><h3>Global Circuit Standings</h3><p>글로벌 대회 성적으로 쌓는 연간 포인트 순위. PGS 시드와 PGC 진출권의 근거.</p></div>
+    <div class="card"><h3>로스터 락 (Roster Lock)</h3><p>선수 명단 확정 시점. 이후 PGS·PGC까지 명단 변경 불가 — 이적 시장이 닫히는 순간.</p></div>
+  </div>
+</section>
+
+<section id="faq" style="border-bottom:none">
+  <div class="snum">SECTION 10</div>
+  <h2>자주 묻는 질문</h2>
+  <details open><summary>게임을 안 해봤는데 봐도 재밌나요?</summary><p>네. 순위 점수표 하나(1위 10점 + 킬 1점)만 알면 관전에 필요한 규칙은 끝입니다. 나머지는 <b>생존 드라마</b>라서 게임 지식 없이도 따라갑니다. 국가대항전 PNC나, 자국 지역 리그(RS) 결승부터 보시길 권합니다.</p></details>
+  <details><summary>매치가 많은데 다 봐야 하나요?</summary><p>아니요. 모든 대회가 <b>누적 포인트제</b>라 하이라이트와 마지막 날만 봐도 충분히 즐겁습니다. 경기 다음날 올라오는 10분 리캡과 쇼츠로 따라잡는 팬도 많습니다.</p></details>
+  <details><summary>PGS랑 PGC는 뭐가 다른가요?</summary><p><b>PGS</b>는 6주마다 돌아오는 글로벌 시리즈(연 4회, 24팀), <b>PGC</b>는 연말에 한 번뿐인 왕중왕전(32팀)입니다. 1년 내내 PGS에서 포인트를 쌓고, 그 성적으로 PGC에 갑니다.</p></details>
+  <details><summary>응원할 팀은 어떻게 고르나요?</summary><p>제일 쉬운 방법 세 가지 — ① 내 지역 RS 리그의 우승팀 ② 오픈 예선부터 올라온 신데렐라 팀 ③ 좋아하게 된 선수의 팀. 선수 전원이 POV 방송을 켜니, 한 명 골라 그 시점으로 보다 보면 자연히 팬이 됩니다.</p></details>
+  <details><summary>우리 팀도 출전할 수 있다는 게 진짜인가요?</summary><p>진짜입니다. 매 사이클 열리는 <b>오픈 예선</b>은 참가 제한이 없습니다. 오픈 → RS → (PCS) → PGS → PGC. 2027년에도 이 사다리는 6주마다 새로 열립니다.</p></details>
+  <details><summary>시점이 TPP라던데, 그게 뭔가요?</summary><p>캐릭터 뒤에서 내려다보는 <b>3인칭 시점</b>입니다. 2026시즌부터 전 대회가 TPP로 진행됩니다. 전 세계 대부분의 플레이어가 즐기는 시점과 같아서, 게임을 해본 사람이라면 화면이 훨씬 익숙하게 읽힙니다.</p></details>
+</section>
+
+</main>
+
+<footer>
+  PUBG Esports · Beginner's Guide 2027 (Internal Draft)<br>
+  기준: 2027 Global Circuit Structure v2.4 · 공식 정보 pubgesports.com
+</footer>
+
+</body>
+</html>
